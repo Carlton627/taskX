@@ -22,5 +22,12 @@
 		"prettier-plugin-svelte": "^2.5.0",
 		"svelte": "^3.44.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"bulma-toast": "^2.4.1",
+		"firebase": "^9.8.3",
+		"firebase-tools": "^11.1.0",
+		"lodash": "^4.17.21",
+		"uuid": "^8.3.2"
+	}
 }
