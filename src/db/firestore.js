@@ -54,3 +54,18 @@ export const getTasksFromFirestore = function (userId) {
 		throw err;
 	}
 };
+
+/**
+ * Function delete a task from firestore
+ * @param {string} taskId corrosponds to the document id to be deleted from firestore.
+ * @param {string} taskType is used to delete the task from the task state variable, can have values ['todo', 'inProgress', 'completed'].
+ * @author Carlton Rodrigues
+ */
+// export const deleteTaskFromFirestore = async function (taskId, taskType) {
+// 	try {
+// 		const taskDocRef = doc(db, `users/${getUser.uid}/tasks`, taskId);
+// 		// await deleteDoc(taskDocRef);
+// 	} catch (err) {
+// 		throw err;
+// 	}
+// };

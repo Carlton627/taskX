@@ -39,11 +39,14 @@
 			</div>
 		</div>
 		<div class="card-footer">
-			<button class="delete-task card-footer-item" on:click={deleteTask(taskData.id)}>
+			<button
+				class="button is-danger is-light delete-task card-footer-item"
+				on:click={deleteTask(taskData.id)}
+			>
 				Delete
 			</button>
 			{#if cardProps.btn}
-				<button class="${cardProps.btnClassName} card-footer-item">
+				<button class="${cardProps.btnClassName} button is-info is-light card-footer-item">
 					{cardProps.btn}
 				</button>
 			{/if}

@@ -3,15 +3,13 @@
 	import { checkAuthState } from '../db/fireauth';
 	import '../global.css';
 
-	export let userDetails;
+	export let userDetails = '';
 
 	checkAuthState((user) => {
 		if (user) {
 			userDetails = user;
-			console.log(userDetails);
 		} else {
 			userDetails = '';
-			console.log(userDetails);
 		}
 	});
 </script>

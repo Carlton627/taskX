@@ -1,9 +1,19 @@
-<div class="task-creator modal">
+<script>
+	export let openTaskModal;
+
+	$: openModal = openTaskModal;
+
+	const closeAddTaskModal = function () {
+		openModal = false;
+	};
+</script>
+
+<div class="task-creator modal {openModal ? 'is-active' : ''}">
 	<div class="modal-background overlay" />
 	<div class="modal-card">
 		<header class="modal-card-head">
 			<p class="modal-card-title">Create a Task</p>
-			<button class="delete close-form" aria-label="close" />
+			<button class="delete close-form" aria-label="close" on:click={closeAddTaskModal} />
 		</header>
 		<section class="modal-card-body">
 			<form class="task-upload">
@@ -98,7 +108,11 @@
 						</button>
 					</div>
 					<div class="control">
-						<button type="button" class="button btn-close is-warning is-light">
+						<button
+							type="button"
+							on:click={closeAddTaskModal}
+							class="button btn-close is-warning is-light"
+						>
 							Cancel
 						</button>
 					</div>
