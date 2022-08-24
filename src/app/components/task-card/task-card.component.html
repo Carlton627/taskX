@@ -1,0 +1,45 @@
+<div class="card task-card">
+    <div class="card-content">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <p [ngClass]="'subtitle is-6 tag ' + tagClassName">
+                        {{
+                            task?.status === 'inProgress'
+                                ? task?.status?.split('P')?.join(' p')
+                                : task?.status
+                        }}
+                    </p>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <span
+                        [ngClass]="'deadline ' + styleClass"
+                        *ngIf="task?.setDeadline"
+                    >
+                        <i class="fa-regular fa-clock"></i>
+                        {{ dateMessage }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <p class="title">{{ task?.name }}</p>
+        <div class="content">{{ task?.description }}</div>
+    </div>
+    <div class="card-footer">
+        <button
+            class="delete-task card-footer-item"
+            (click)="deleteTask(task?.id, task?.status)"
+        >
+            Delete
+        </button>
+        <button
+            class="card-footer-item"
+            *ngIf="task?.status !== 'completed'"
+            (click)="transitionTask(task?.id, task?.status)"
+        >
+            {{ buttonName }}
+        </button>
+    </div>
+</div>

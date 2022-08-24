@@ -1,0 +1,52 @@
+<nav class="navbar is-warning navbar-main" role="navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <img
+                class="nav-logo"
+                src="./src/assets/taskX_logo_nav.png"
+                alt=""
+            />
+        </div>
+    </div>
+    <div class="navbar-end">
+        <div class="navbar-item" *ngIf="!user">
+            <button
+                class="button button-login is-light"
+                (click)="googleSignIn()"
+            >
+                <img src="./src/assets/Google__G__Logo.svg" />
+                &nbsp;Sign in
+            </button>
+        </div>
+        <ng-container *ngIf="user">
+            <span class="user-signed-in">
+                <div class="navbar-item">
+                    <button
+                        class="nav__btn--new-task button is-warning is-light"
+                        (click)="dataService.showAddTaskForm = true"
+                    >
+                        New task
+                    </button>
+                </div>
+            </span>
+
+            <div
+                class="user-signed-in hidden navbar-item has-dropdown is-hoverable"
+            >
+                <a class="navbar-link username">
+                    Hi {{ user.firstName }} &nbsp;
+                    <img [src]="user.photoURL" alt="" class="user-img" />
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="button-logoff navbar-item" (click)="signOut()">
+                        Sign out
+                    </a>
+                    <hr class="navbar-divider" />
+                    <p class="navbar-item is-warning">TaskX&copy; 1.1.0</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</nav>
+
+<app-add-task-form *ngIf="dataService.showAddTaskForm"></app-add-task-form>

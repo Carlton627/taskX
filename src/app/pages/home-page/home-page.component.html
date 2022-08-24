@@ -1,0 +1,72 @@
+<section class="task-list">
+    <div class="columns">
+        <div class="todo column is-one-third">
+            <div class="task-header level">
+                <div class="level-left">
+                    <h1 class="title is-2 level-item">Todos</h1>
+                </div>
+                <div class="level-right">
+                    <button
+                        class="button delete-all is-danger is-light level-item"
+                        (click)="deleteAllTasks(todoTasks)"
+                    >
+                        Delete all
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngFor="let todo of todoTasks">
+                <app-task-card
+                    [task]="todo"
+                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
+                    (transistionTaskMetaData)="transitionTask($event)"
+                ></app-task-card>
+            </ng-container>
+        </div>
+        <div class="in-progress column">
+            <div class="task-header level">
+                <div class="level-left">
+                    <h1 class="title is-2 level-item">In - Progress</h1>
+                </div>
+                <div class="level-right">
+                    <button
+                        class="button delete-all is-danger is-light level-item"
+                        (click)="deleteAllTasks(inProgressTasks)"
+                    >
+                        Delete all
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngFor="let inProgress of inProgressTasks">
+                <app-task-card
+                    [task]="inProgress"
+                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
+                    (transistionTaskMetaData)="transitionTask($event)"
+                ></app-task-card>
+            </ng-container>
+        </div>
+        <div class="completed column">
+            <div class="task-header level">
+                <div class="level-left">
+                    <h1 class="title is-2 level-item">Completed</h1>
+                </div>
+                <div class="level-right">
+                    <button
+                        class="button delete-all is-danger is-light level-item"
+                        (click)="deleteAllTasks(completedTasks)"
+                    >
+                        Delete all
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngFor="let completed of completedTasks">
+                <app-task-card
+                    [task]="completed"
+                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
+                ></app-task-card>
+            </ng-container>
+        </div>
+    </div>
+    <div class="spinner">
+        <progress class="progress is-small is-danger" max="100"></progress>
+    </div>
+</section>

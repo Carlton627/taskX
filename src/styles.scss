@@ -1,1 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.task-creator {
+    transition: all 0.5s ease;
+}
+
+.task-list {
+    margin: 0.75rem;
+}
+
+.task-card {
+    margin: 1rem;
+    min-width: 33%;
+}
+
+.spinner {
+    margin: 50vh auto 0;
+    transform: translateY(-50%);
+}
+
+.user-img {
+    border-radius: 50%;
+}
+
+.nav-logo {
+    height: 60%;
+    width: 100%;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
+}
+
+.twitter-icon,
+.github-icon,
+.linkedin-icon {
+    transition: all 0.7s ease;
+    color: gray;
+}
+
+.twitter-icon:hover {
+    color: #109afb;
+}
+
+.github-icon:hover {
+    color: black;
+}
+
+.linkedin-icon:hover {
+    color: #0a66c2;
+}
