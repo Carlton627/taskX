@@ -18,12 +18,22 @@
             ></button>
         </header>
         <section class="modal-card-body">
-            <form class="task-upload">
+            <form
+                class="task-upload"
+                [formGroup]="addTaskForm"
+                (ngSubmit)="addTask()"
+            >
                 <div class="field">
-                    <label class="label">Choose task status</label>
+                    <label class="label">
+                        Choose task status
+                        <span class="required" *ngIf="status?.invalid">*</span>
+                    </label>
                     <div class="control">
                         <div class="select">
-                            <select name="status" class="task-status">
+                            <select
+                                formControlName="status"
+                                class="task-status"
+                            >
                                 <option value="todo">To-do</option>
                                 <option value="inProgress">In progress</option>
                             </select>
@@ -31,27 +41,47 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">Task Name</label>
+                    <label class="label">
+                        Task Name
+                        <span class="required" *ngIf="name?.invalid">*</span>
+                    </label>
                     <div class="control">
                         <input
                             type="text"
-                            name="name"
+                            formControlName="name"
                             class="input"
                             placeholder="Debug app.js"
                             required
                         />
+                        <span
+                            class="required validation-message"
+                            *ngIf="name?.invalid && name?.touched"
+                        >
+                            Taskname is required
+                        </span>
                     </div>
                 </div>
 
                 <div class="field">
-                    <label class="label">Describe the task at hand</label>
+                    <label class="label">
+                        Describe the task at hand
+                        <span class="required" *ngIf="description?.invalid"
+                            >*</span
+                        >
+                    </label>
                     <div class="control">
                         <textarea
                             placeholder="Don't write a novel :D"
                             class="textarea"
-                            name="description"
+                            formControlName="description"
                             required
                         ></textarea>
+                        <span
+                            class="required validation-message"
+                            *ngIf="description?.invalid && description?.touched"
+                        >
+                            Description is required
+                        </span>
                     </div>
                 </div>
                 <hr />
@@ -62,46 +92,68 @@
                                 Set Deadline? &nbsp;
                                 <input
                                     type="checkbox"
-                                    name="setDeadline"
+                                    formControlName="setDeadline"
                                     class="deadline-checkbox"
                                 />
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="field is-grouped dates">
+                <div class="field is-grouped dates" *ngIf="enableDates">
                     <div class="control">
                         <div class="date">
                             <label class="label"> Start date </label>
                             <input
                                 type="date"
                                 class="input start-date"
-                                name="startsOn"
-                                disabled
+                                formControlName="startsOn"
                             />
                             <p
-                                class="help is-danger start-error-text-1 hidden"
-                            ></p>
+                                *ngIf="!dateInvalidChecks.startDateCurrentDate"
+                                class="help is-danger validation-message"
+                            >
+                                {{ dateErrors.startDateLessThanCurrentDate }}
+                            </p>
                             <p
-                                class="help is-danger start-error-text-2 hidden"
-                            ></p>
+                                *ngIf="!dateInvalidChecks.startDateDeadline"
+                                class="help is-danger validation-message"
+                            >
+                                {{ dateErrors.startDateGreaterThanDeadline }}
+                            </p>
                         </div>
                     </div>
                     <div class="control">
                         <div class="date">
-                            <label class="label">End date</label>
+                            <label class="label">
+                                End date
+                                <span
+                                    *ngIf="enableDates && deadline?.invalid"
+                                    class="required"
+                                >
+                                    *
+                                </span>
+                            </label>
                             <input
                                 type="date"
                                 class="input deadline-date"
-                                name="deadline"
-                                disabled
+                                formControlName="deadline"
                             />
                         </div>
-                        <p class="help is-danger end-error-text-1 hidden"></p>
-                        <p class="help is-danger end-error-text-2 hidden"></p>
+                        <p
+                            *ngIf="!dateInvalidChecks.deadlineCurrentDate"
+                            class="help is-danger validation-message"
+                        >
+                            {{ dateErrors.deadlineLessThanCurrentDate }}
+                        </p>
+                        <p
+                            *ngIf="!dateInvalidChecks.deadlineStartDate"
+                            class="help is-danger validation-message"
+                        >
+                            {{ dateErrors.deadlineLessThanStartDate }}
+                        </p>
                     </div>
                 </div>
-                <article class="message is-warning">
+                <article class="message is-warning" *ngIf="enableDates">
                     <div class="message-header">
                         <p>Note&nbsp;:</p>
                     </div>
@@ -118,6 +170,7 @@
                         <button
                             type="submit"
                             class="submit-form button is-warning"
+                            [disabled]="addTaskForm.invalid || !datesValid"
                         >
                             Submit
                         </button>

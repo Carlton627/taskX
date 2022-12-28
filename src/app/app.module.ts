@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,13 +18,23 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
 import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
 
 @NgModule({
-    declarations: [AppComponent, LandingPageComponent, HomePageComponent, NavbarComponent, FooterComponent, TaskCardComponent, AddTaskFormComponent],
+    declarations: [
+        AppComponent,
+        LandingPageComponent,
+        HomePageComponent,
+        NavbarComponent,
+        FooterComponent,
+        TaskCardComponent,
+        AddTaskFormComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
