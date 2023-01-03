@@ -15,6 +15,8 @@ import {
 } from '@angular/fire/firestore';
 import { Task } from '../models/Task';
 import { AuthService } from './auth.service';
+import { v4 as uuidv4 } from 'uuid';
+import { DataService } from './data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -36,6 +38,20 @@ export class FirestoreService {
     addUserToFirestore(docId: string, userData: any) {
         const userDoc = doc(this.afs, 'users', docId);
         return setDoc(userDoc, userData);
+    }
+
+    addTaskToFirestore(taskData: any) {
+        const task = {
+            ...taskData,
+            id: uuidv4(),
+            author: this.userId,
+            createdAt: Timestamp.fromDate(new Date()),
+        };
+        const taskDocRef = doc(this.afs, `users/${this.userId}/tasks`, task.id);
+        return setDoc(taskDocRef, task);
+        // task.status === 'todo'
+        //     ? state.tasks.todo.push(task)
+        //     : state.tasks.inProgress.push(task);
     }
 
     getTasksFromFirestore() {
