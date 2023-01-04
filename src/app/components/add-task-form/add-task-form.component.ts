@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { taskTypes, errors } from 'src/app/shared/configs/constants';
+import { Task } from 'src/app/shared/models/Task';
 import { DataService } from 'src/app/shared/services/data.service';
+import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
     selector: 'app-add-task-form',
@@ -9,6 +12,8 @@ import { DataService } from 'src/app/shared/services/data.service';
     styleUrls: ['./add-task-form.component.scss'],
 })
 export class AddTaskFormComponent implements OnInit {
+    @Output() taskAdded: EventEmitter<Task> = new EventEmitter();
+
     enableDates = false;
     dateErrors = errors.dateInputErrors;
     dateInvalidChecks = {
@@ -28,7 +33,10 @@ export class AddTaskFormComponent implements OnInit {
         deadline: new FormControl(''),
     });
 
-    constructor(public dataService: DataService) {}
+    constructor(
+        public dataService: DataService,
+        private afs: FirestoreService
+    ) {}
 
     ngOnInit(): void {
         const getDeadlineFormField = this.addTaskForm.get('deadline');
@@ -119,10 +127,29 @@ export class AddTaskFormComponent implements OnInit {
         return true;
     }
 
-    addTask() {
-        const { status, name, description, setDeadline, startsOn, deadline } =
-            this.addTaskForm.value;
-        console.log(status, name, description, setDeadline, startsOn, deadline);
+    async addTask() {
+        const newTask: Task = {
+            name: this.addTaskForm.value.name || '',
+            id: uuidv4(),
+            description: this.addTaskForm.value.description || '',
+            setDeadline: this.addTaskForm.value.setDeadline || false,
+            status: this.addTaskForm.value.status || taskTypes.TODO_TYPE,
+        };
+
+        if (newTask.setDeadline) {
+            newTask.startsOn = this.addTaskForm.value.startsOn || '';
+            newTask.deadline = this.addTaskForm.value.deadline || '';
+        }
+
+        try {
+            await this.afs.addTaskToFirestore(newTask);
+            this.taskAdded.emit(newTask);
+            setTimeout(() => {
+                this.dataService.showAddTaskForm = false;
+            }, 1500);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     get status() {

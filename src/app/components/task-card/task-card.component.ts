@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { taskTypes } from 'src/app/shared/configs/constants';
-import { TaskMetaData } from 'src/app/shared/models/TaskMetaData';
+import { TaskMetaData } from 'src/app/shared/models/Task';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Component({

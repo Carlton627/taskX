@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { Task } from 'src/app/shared/models/Task';
-import { TaskMetaData } from 'src/app/shared/models/TaskMetaData';
+import { Task, TaskMetaData, TaskState } from 'src/app/shared/models/Task';
 import { taskTypes } from 'src/app/shared/configs/constants';
 
 @Component({
@@ -12,14 +10,16 @@ import { taskTypes } from 'src/app/shared/configs/constants';
     styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-    userSubscription: Subscription | undefined;
-    todoTasks: Task[] = [];
-    inProgressTasks: Task[] = [];
-    completedTasks: Task[] = [];
+    tasks: TaskState = {
+        todo: [],
+        inProgress: [],
+        completed: [],
+    };
+    loadingSpinner = true;
 
     constructor(
         private afs: FirestoreService,
-        private dataService: DataService
+        public dataService: DataService
     ) {}
 
     ngOnInit(): void {
@@ -27,14 +27,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
             if (!tasks) return;
             tasks.forEach((task: any) => {
                 const taskData = task.data();
-                if (taskData.status === taskTypes.TODO_TYPE) {
-                    this.todoTasks.push(taskData);
-                } else if (taskData.status === taskTypes.INPROGRESS_TYPE) {
-                    this.inProgressTasks.push(taskData);
-                } else if (taskData.status === taskTypes.COMPLETED_TYPE) {
-                    this.completedTasks.push(taskData);
-                }
+                const taskList = this.filterTaskStateByType(taskData.status);
+                taskList.push(taskData);
             });
+            this.loadingSpinner = false;
         });
     }
 
@@ -42,13 +38,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     deleteTaskFromTaskList(taskMetaData: TaskMetaData) {
         const { taskId, taskType } = taskMetaData;
-        if (taskType === taskTypes.TODO_TYPE) {
-            this.findTaskIndexDelete(this.todoTasks, taskId);
-        } else if (taskType === taskTypes.INPROGRESS_TYPE) {
-            this.findTaskIndexDelete(this.inProgressTasks, taskId);
-        } else if (taskType === taskTypes.COMPLETED_TYPE) {
-            this.findTaskIndexDelete(this.completedTasks, taskId);
-        }
+        const taskList = this.filterTaskStateByType(taskType);
+        this.findTaskIndexDelete(taskList, taskId);
     }
 
     private findTaskIndexDelete(taskList: Task[], taskId: string) {
@@ -61,15 +52,15 @@ export class HomePageComponent implements OnInit, OnDestroy {
         const shiftToTask = toTaskType ? toTaskType : '';
         if (taskType === taskTypes.TODO_TYPE) {
             this.findTaskIndexTransition(
-                this.todoTasks,
-                this.inProgressTasks,
+                this.tasks.todo,
+                this.tasks.inProgress,
                 taskId,
                 shiftToTask
             );
         } else if (taskType === taskTypes.INPROGRESS_TYPE) {
             this.findTaskIndexTransition(
-                this.inProgressTasks,
-                this.completedTasks,
+                this.tasks.inProgress,
+                this.tasks.completed,
                 taskId,
                 shiftToTask
             );
@@ -89,12 +80,23 @@ export class HomePageComponent implements OnInit, OnDestroy {
         toTaskList.push(updatedTask);
     }
 
+    private filterTaskStateByType(taskType: string) {
+        type ObjectKey = keyof TaskState;
+        const type = taskType as ObjectKey;
+        return this.tasks[type];
+    }
+
     async deleteAllTasks(taskList: Task[]) {
         try {
             await this.afs.deleteAllTasksFromFirestore(taskList);
-            taskList = [];
+            taskList.splice(0, taskList.length);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    addNewTaskToList(task: Task) {
+        const taskList = this.filterTaskStateByType(task.status);
+        taskList.push(task);
     }
 }

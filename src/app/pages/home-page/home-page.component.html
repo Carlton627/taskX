@@ -8,13 +8,14 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(todoTasks)"
+                        (click)="deleteAllTasks(tasks.todo)"
+                        *ngIf="tasks.todo.length"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let todo of todoTasks">
+            <ng-container *ngFor="let todo of this.tasks.todo">
                 <app-task-card
                     [task]="todo"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
@@ -30,13 +31,14 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(inProgressTasks)"
+                        (click)="deleteAllTasks(tasks.inProgress)"
+                        *ngIf="tasks.inProgress.length"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let inProgress of inProgressTasks">
+            <ng-container *ngFor="let inProgress of this.tasks.inProgress">
                 <app-task-card
                     [task]="inProgress"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
@@ -52,13 +54,14 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(completedTasks)"
+                        (click)="deleteAllTasks(tasks.completed)"
+                        *ngIf="tasks.completed.length"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let completed of completedTasks">
+            <ng-container *ngFor="let completed of this.tasks.completed">
                 <app-task-card
                     [task]="completed"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
@@ -66,7 +69,12 @@
             </ng-container>
         </div>
     </div>
-    <div class="spinner">
+    <div class="spinner" *ngIf="loadingSpinner">
         <progress class="progress is-small is-danger" max="100"></progress>
     </div>
 </section>
+
+<app-add-task-form
+    *ngIf="dataService.showAddTaskForm"
+    (taskAdded)="addNewTaskToList($event)"
+></app-add-task-form>
