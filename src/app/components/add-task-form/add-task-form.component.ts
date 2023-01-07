@@ -58,6 +58,7 @@ export class AddTaskFormComponent implements OnInit {
                 getStartsOnFormField?.updateValueAndValidity();
             });
 
+        // TODO: Refactor code to follow DRY
         this.addTaskForm.get('deadline')?.valueChanges.subscribe(value => {
             const selectedDate = this.getDateWithMidnightTime(
                 new Date(value ? value : '')
@@ -88,6 +89,7 @@ export class AddTaskFormComponent implements OnInit {
             this.datesValid = this.checkDatesValid();
         });
 
+        //TODO: Refactor code to follow DRY
         this.addTaskForm.get('startsOn')?.valueChanges.subscribe(value => {
             const selectedDate = this.getDateWithMidnightTime(
                 new Date(value ? value : '')
