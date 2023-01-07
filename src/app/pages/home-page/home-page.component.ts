@@ -51,29 +51,30 @@ export class HomePageComponent implements OnInit, OnDestroy {
         const { taskId, taskType, toTaskType } = taskMetaData;
         const shiftToTask = toTaskType ? toTaskType : '';
         if (taskType === taskTypes.TODO_TYPE) {
-            this.findTaskIndexTransition(
-                this.tasks.todo,
-                this.tasks.inProgress,
-                taskId,
-                shiftToTask
-            );
+            this.findTaskIndexTransition(this.tasks.todo, taskId, shiftToTask);
         } else if (taskType === taskTypes.INPROGRESS_TYPE) {
             this.findTaskIndexTransition(
                 this.tasks.inProgress,
-                this.tasks.completed,
                 taskId,
                 shiftToTask
             );
         }
     }
 
+    /**
+     * Finds task index in state object and transitions it from taskList to toTaskList using the toTaskType parameter
+     * @param taskList
+     * @param toTaskList
+     * @param taskId
+     * @param toTaskType
+     */
     private findTaskIndexTransition(
         taskList: Task[],
-        toTaskList: Task[],
         taskId: string,
         toTaskType: string
     ) {
         if (!toTaskType) return;
+        const toTaskList = this.filterTaskStateByType(toTaskType);
         const index = taskList.findIndex(el => el.id === taskId);
         const [updatedTask] = taskList.splice(index, 1);
         updatedTask.status = toTaskType;
