@@ -16,6 +16,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
 import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
+import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-page.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { AddTaskFormComponent } from './components/add-task-form/add-task-form.c
         FooterComponent,
         TaskCardComponent,
         AddTaskFormComponent,
+        TaskDetailPageComponent,
     ],
     imports: [
         BrowserModule,

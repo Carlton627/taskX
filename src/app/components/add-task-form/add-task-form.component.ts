@@ -4,6 +4,7 @@ import { taskTypes, errors } from 'src/app/shared/configs/constants';
 import { Task } from 'src/app/shared/models/Task';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -35,7 +36,8 @@ export class AddTaskFormComponent implements OnInit {
 
     constructor(
         public dataService: DataService,
-        private afs: FirestoreService
+        private afs: FirestoreService,
+        private util: UtilService
     ) {}
 
     ngOnInit(): void {
@@ -60,11 +62,11 @@ export class AddTaskFormComponent implements OnInit {
 
         // TODO: Refactor code to follow DRY
         this.addTaskForm.get('deadline')?.valueChanges.subscribe(value => {
-            const selectedDate = this.getDateWithMidnightTime(
+            const selectedDate = this.util.getDateWithMidnightTime(
                 new Date(value ? value : '')
             );
 
-            const currentDate = this.getDateWithMidnightTime();
+            const currentDate = this.util.getDateWithMidnightTime();
 
             if (selectedDate < currentDate) {
                 this.dateInvalidChecks.deadlineCurrentDate = false;
@@ -75,7 +77,7 @@ export class AddTaskFormComponent implements OnInit {
             if (getStartsOnFormField?.value) {
                 if (
                     selectedDate <
-                    this.getDateWithMidnightTime(
+                    this.util.getDateWithMidnightTime(
                         new Date(getStartsOnFormField.value)
                     )
                 ) {
@@ -91,11 +93,11 @@ export class AddTaskFormComponent implements OnInit {
 
         //TODO: Refactor code to follow DRY
         this.addTaskForm.get('startsOn')?.valueChanges.subscribe(value => {
-            const selectedDate = this.getDateWithMidnightTime(
+            const selectedDate = this.util.getDateWithMidnightTime(
                 new Date(value ? value : '')
             );
 
-            const currentDate = this.getDateWithMidnightTime();
+            const currentDate = this.util.getDateWithMidnightTime();
 
             if (selectedDate < currentDate) {
                 this.dateInvalidChecks.startDateCurrentDate = false;
@@ -106,7 +108,7 @@ export class AddTaskFormComponent implements OnInit {
             if (getDeadlineFormField?.value) {
                 if (
                     selectedDate >
-                    this.getDateWithMidnightTime(
+                    this.util.getDateWithMidnightTime(
                         new Date(getDeadlineFormField.value)
                     )
                 ) {
@@ -137,6 +139,8 @@ export class AddTaskFormComponent implements OnInit {
             setDeadline: this.addTaskForm.value.setDeadline || false,
             status: this.addTaskForm.value.status || taskTypes.TODO_TYPE,
         };
+
+        // TODO: add slug field
 
         if (newTask.setDeadline) {
             newTask.startsOn = this.addTaskForm.value.startsOn || '';
@@ -172,9 +176,5 @@ export class AddTaskFormComponent implements OnInit {
 
     get deadline() {
         return this.addTaskForm.get('deadline');
-    }
-
-    getDateWithMidnightTime(date = new Date(), hours = 0) {
-        return new Date(date.setHours(hours, 0, 0, 0));
     }
 }

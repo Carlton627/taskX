@@ -8,6 +8,8 @@ export interface Task {
     status: string;
     startsOn?: string;
     deadline?: string;
+    slug?: string;
+    assignee?: string;
 }
 
 export interface TaskMetaData {
