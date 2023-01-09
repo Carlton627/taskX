@@ -36,12 +36,20 @@ body {
     width: 100%;
 }
 
-.text-red {
+.text-error {
     color: red;
 }
 
-.text-green {
+.text-success {
     color: green;
+}
+
+.text-warn {
+    color: orange;
+}
+
+.text-info {
+    color: #0a66c2;
 }
 
 .twitter-icon,

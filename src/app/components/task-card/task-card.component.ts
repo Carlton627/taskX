@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { taskTypes } from 'src/app/shared/configs/constants';
+import { taskTypes, styleConfigs } from 'src/app/shared/configs/constants';
 import { TaskMetaData } from 'src/app/shared/models/Task';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { UtilService } from 'src/app/shared/services/util.service';
@@ -87,6 +87,7 @@ export class TaskCardComponent implements OnInit {
                     daysLeft > 1
                         ? `Starts in ${daysLeft} days`
                         : 'Starts Tomorrow';
+                this.styleClass = styleConfigs.TextInfo;
                 startDateCrossed = false;
             }
         }
@@ -97,11 +98,16 @@ export class TaskCardComponent implements OnInit {
             const daysLeft = this.util.findDaysLeft(
                 deadline.valueOf() - currentDate.valueOf()
             );
-            this.dateMessage = daysLeft ? `${daysLeft} days left` : 'Due today';
-            this.styleClass = 'text-green';
+            const daysLeftFormatter = new Intl.RelativeTimeFormat('en-us', {
+                style: 'long',
+            });
+            this.dateMessage = daysLeft
+                ? `Due ${daysLeftFormatter.format(daysLeft, 'days')}`
+                : 'Due Today';
+            this.styleClass = styleConfigs.TextSuccess;
         } else {
             this.dateMessage = 'Deadline crossed';
-            this.styleClass = 'text-red';
+            this.styleClass = styleConfigs.TextError;
         }
     }
 }

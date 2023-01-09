@@ -35,10 +35,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     async checkExistingUsers(credential: any) {
-        const userDocSnap = await this.afs.getDocumentById(
-            'users',
-            credential?.user?.uid
-        );
+        const userDocSnap = await this.afs.getUserById(credential?.user?.uid);
         return userDocSnap.exists();
     }
 

@@ -12,6 +12,7 @@ import {
     deleteDoc,
     writeBatch,
     Firestore,
+    orderBy,
 } from '@angular/fire/firestore';
 import { Task } from '../models/Task';
 import { AuthService } from './auth.service';
@@ -27,9 +28,9 @@ export class FirestoreService {
         });
     }
 
-    getDocumentById(collectionString: string, id: any) {
+    getUserById(id: any) {
         // INFO: returns a promise
-        const docRef = doc(this.afs, collectionString, id);
+        const docRef = doc(this.afs, 'users', id);
         return getDoc(docRef);
     }
 
@@ -51,7 +52,8 @@ export class FirestoreService {
     getTasksFromFirestore() {
         const q = query(
             collection(this.afs, `users/${this.userId}/tasks`),
-            where('author', '==', this.userId)
+            where('author', '==', this.userId),
+            orderBy('createdAt', 'desc')
         );
         return getDocs(q);
     }

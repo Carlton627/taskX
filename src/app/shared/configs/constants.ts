@@ -13,3 +13,10 @@ export const errors = Object.freeze({
         deadlineLessThanStartDate: 'Deadline must be greater than start date',
     },
 });
+
+export const styleConfigs = Object.freeze({
+    TextError: 'text-error',
+    TextWarn: 'text-warn',
+    TextInfo: 'text-info',
+    TextSuccess: 'text-success',
+});
