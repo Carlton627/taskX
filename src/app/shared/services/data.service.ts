@@ -7,6 +7,7 @@ import { User } from '../models/User';
 export class DataService {
     userData: User | undefined;
     showAddTaskForm = false;
+    showCreateTeamForm = false;
 
     constructor() {}
 

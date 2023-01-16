@@ -8,6 +8,28 @@
             />
         </div>
     </div>
+    <div class="navbar-start">
+        <div
+            *ngIf="user && activeNavMenuItem"
+            class="navbar-item has-dropdown is-hoverable"
+        >
+            <span class="navbar-link">{{ activeNavMenuItem }}</span>
+            <div class="navbar-dropdown app-options">
+                <ng-container *ngFor="let menuOption of appOptionsMenu">
+                    <!-- use is-active class to highlight link -->
+                    <a
+                        [ngClass]="{
+                            'navbar-item': true,
+                            'is-active': menuOption.isActive
+                        }"
+                        (click)="menuItemSelectEvent(menuOption, true)"
+                    >
+                        {{ menuOption.name }}
+                    </a>
+                </ng-container>
+            </div>
+        </div>
+    </div>
     <div class="navbar-end">
         <div class="navbar-item" *ngIf="!user">
             <button
@@ -22,11 +44,23 @@
             <span class="user-signed-in">
                 <div class="navbar-item">
                     <button
+                        *ngIf="addTaskMode"
                         class="nav__btn--new-task button is-warning is-light"
                         (click)="dataService.showAddTaskForm = true"
                     >
                         New task
                     </button>
+
+                    <button
+                        *ngIf="!addTaskMode"
+                        class="nav__btn--new-task button is-warning is-light"
+                        (click)="dataService.showCreateTeamForm = true"
+                    >
+                        Create Team
+                    </button>
+                    <!-- Nav bar stuff -->
+                    <!-- A Button and form for creating teams -->
+                    <!-- Create a separate form component for creating teams -->
                 </div>
             </span>
 

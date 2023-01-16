@@ -1,0 +1,26 @@
+<section class="teams">
+    <div class="hero is-medium">
+        <div class="hero-body has-text-centered">
+            <p class="title">Welcome to TaskX<sup>&copy;</sup> teams</p>
+            <p class="subtitle">
+                To get started click on the Create Team button up top.
+            </p>
+        </div>
+    </div>
+
+    <div class="section teams-list">
+        <h2 class="title">Teams</h2>
+        <div
+            class="team-cards columns is-variable is-3-desktop is-8-widescreen"
+            *ngFor="let teamsIterable of teamsIterableCardsList"
+        >
+            <div class="column is-one-third" *ngFor="let team of teamsIterable">
+                <app-team-card [team]="team"></app-team-card>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-create-team-form
+    *ngIf="dataService.showCreateTeamForm"
+></app-create-team-form>

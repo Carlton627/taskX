@@ -131,6 +131,14 @@ export class AddTaskFormComponent implements OnInit {
         return true;
     }
 
+    private createSlug(task: Task) {
+        const slugArr = task.name
+            .toLowerCase()
+            .split(' ')
+            .filter((fragment: string) => fragment.match(/^[a-z0-9]+$/i));
+        return `${slugArr.join('-')}-${task.id.split('-')[0]}`;
+    }
+
     async addTask() {
         const newTask: Task = {
             name: this.addTaskForm.value.name || '',
@@ -140,12 +148,16 @@ export class AddTaskFormComponent implements OnInit {
             status: this.addTaskForm.value.status || taskTypes.TODO_TYPE,
         };
 
-        // TODO: add slug field
-
         if (newTask.setDeadline) {
             newTask.startsOn = this.addTaskForm.value.startsOn || '';
             newTask.deadline = this.addTaskForm.value.deadline || '';
         }
+
+        // TODO: Throw error here for data that is not proper
+        if (!this.datesValid || !newTask.name || !newTask.description) return;
+
+        // Assign a slug to the task
+        newTask.slug = this.createSlug(newTask);
 
         try {
             await this.afs.addTaskToFirestore(newTask);
@@ -156,6 +168,10 @@ export class AddTaskFormComponent implements OnInit {
         } catch (err) {
             console.error(err);
         }
+    }
+
+    closeForm() {
+        this.dataService.showAddTaskForm = false;
     }
 
     get status() {

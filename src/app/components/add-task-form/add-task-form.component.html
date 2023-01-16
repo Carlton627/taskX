@@ -4,17 +4,14 @@
         'is-active': dataService.showAddTaskForm
     }"
 >
-    <div
-        class="modal-background overlay"
-        (click)="dataService.showAddTaskForm = false"
-    ></div>
+    <div class="modal-background overlay" (click)="closeForm()"></div>
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">Create a Task</p>
             <button
                 class="delete close-form"
                 aria-label="close"
-                (click)="dataService.showAddTaskForm = false"
+                (click)="closeForm()"
             ></button>
         </header>
         <section class="modal-card-body">
@@ -179,7 +176,7 @@
                         <button
                             type="button"
                             class="button btn-close is-warning is-light"
-                            (click)="dataService.showAddTaskForm = false"
+                            (click)="closeForm()"
                         >
                             Cancel
                         </button>

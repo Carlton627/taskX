@@ -10,6 +10,7 @@ import {
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-page.component';
+import { TeamPageComponent } from './pages/team-page/team-page.component';
 
 const redirectUnauthorizedToLandingPage = () => redirectUnauthorizedTo(['']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
@@ -34,8 +35,8 @@ const routes: Routes = [
         data: { authGuardPipe: redirectUnauthorizedToLandingPage },
     },
     {
-        path: 'team/:slug',
-        component: HomePageComponent,
+        path: 'teams',
+        component: TeamPageComponent,
         canActivate: [AuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLandingPage },
     },

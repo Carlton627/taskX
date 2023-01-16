@@ -1,0 +1,90 @@
+<div
+    [ngClass]="{
+        'task-creator modal': true,
+        'is-active': dataService.showCreateTeamForm
+    }"
+>
+    <div class="modal-background overlay" (click)="closeForm()"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Create a Task</p>
+            <button
+                class="delete close-form"
+                aria-label="close"
+                (click)="closeForm()"
+            ></button>
+        </header>
+        <section class="modal-card-body">
+            <form
+                class="task-upload"
+                [formGroup]="createTeamForm"
+                (ngSubmit)="createTeam()"
+            >
+                <div class="field">
+                    <label class="label">
+                        Name your team
+                        <span class="required" *ngIf="name?.invalid">*</span>
+                    </label>
+                    <div class="control">
+                        <input
+                            type="text"
+                            formControlName="name"
+                            class="input"
+                            placeholder="Debug app.js"
+                            required
+                        />
+                        <span
+                            class="required validation-message"
+                            *ngIf="name?.invalid && name?.touched"
+                        >
+                            Team name is required
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">
+                        Write something about the purpose of your team
+                    </label>
+                    <div class="control">
+                        <textarea
+                            placeholder="Creating the next super tech"
+                            class="textarea"
+                            formControlName="description"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <hr />
+                <!-- Create field to add members, check throtling and debouncing -->
+                <hr />
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button
+                            type="submit"
+                            class="submit-form button is-warning"
+                            [disabled]="createTeamForm.invalid"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button
+                            type="button"
+                            class="button btn-close is-warning is-light"
+                            (click)="closeForm()"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot">
+            <p class="subtitle is-6">
+                TaskX&copy; doesn't share your data with anyone
+            </p>
+        </footer>
+    </div>
+</div>

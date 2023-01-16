@@ -17,6 +17,9 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
 import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
 import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-page.component';
+import { TeamPageComponent } from './pages/team-page/team-page.component';
+import { TeamCardComponent } from './components/team-card/team-card.component';
+import { CreateTeamFormComponent } from './components/create-team-form/create-team-form.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +31,9 @@ import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-pa
         TaskCardComponent,
         AddTaskFormComponent,
         TaskDetailPageComponent,
+        TeamPageComponent,
+        TeamCardComponent,
+        CreateTeamFormComponent,
     ],
     imports: [
         BrowserModule,
