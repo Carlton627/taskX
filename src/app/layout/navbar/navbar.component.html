@@ -35,6 +35,7 @@
             <button
                 class="button button-login is-light"
                 (click)="googleSignIn()"
+                [disabled]="!isSignInCompleteAfterClick"
             >
                 <img src="../../../assets/Google__G__Logo.svg" />
                 &nbsp;Sign in

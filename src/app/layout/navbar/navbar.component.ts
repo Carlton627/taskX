@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     activeNavMenuItem = '';
     addTaskMode = true;
+    isSignInCompleteAfterClick = true;
 
     ngOnInit(): void {
         this.userSubscription = this.auth
@@ -88,6 +89,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     async googleSignIn() {
         try {
+            this.isSignInCompleteAfterClick = false;
             const credential = await this.auth.signInWithGoogle();
             if (await this.checkExistingUsers(credential)) {
                 this.router.navigateByUrl('/home');
@@ -100,6 +102,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            this.isSignInCompleteAfterClick = true;
         }
     }
 

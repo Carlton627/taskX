@@ -167,7 +167,11 @@
                         <button
                             type="submit"
                             class="submit-form button is-warning"
-                            [disabled]="addTaskForm.invalid || !datesValid"
+                            [disabled]="
+                                addTaskForm.invalid ||
+                                !datesValid ||
+                                !isAddTaskComplete
+                            "
                         >
                             Submit
                         </button>

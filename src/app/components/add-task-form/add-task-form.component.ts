@@ -34,6 +34,8 @@ export class AddTaskFormComponent implements OnInit {
         deadline: new FormControl(''),
     });
 
+    isAddTaskComplete = true;
+
     constructor(
         public dataService: DataService,
         private afs: FirestoreService,
@@ -160,13 +162,20 @@ export class AddTaskFormComponent implements OnInit {
         newTask.slug = this.createSlug(newTask);
 
         try {
+            // disable submit button
+            this.isAddTaskComplete = false;
             await this.afs.addTaskToFirestore(newTask);
             this.taskAdded.emit(newTask);
             setTimeout(() => {
+                this.addTaskForm.reset();
                 this.dataService.showAddTaskForm = false;
-            }, 1500);
+                // enable submit button
+                this.isAddTaskComplete = true;
+            }, 1000);
         } catch (err) {
             console.error(err);
+            // enable submit button
+            this.isAddTaskComplete = true;
         }
     }
 

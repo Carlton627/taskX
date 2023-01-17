@@ -30,7 +30,7 @@
                             type="text"
                             formControlName="name"
                             class="input"
-                            placeholder="Debug app.js"
+                            placeholder="Sonic Network"
                             required
                         />
                         <span
@@ -56,7 +56,30 @@
                 </div>
 
                 <hr />
-                <!-- Create field to add members, check throtling and debouncing -->
+                <!-- TODO: look for typeahead search components in bulma instead of a simple text field -->
+                <div class="field">
+                    <label class="label">
+                        Add users
+                        <span class="required" *ngIf="members?.invalid">*</span>
+                    </label>
+                    <div class="control">
+                        <input
+                            #userInput
+                            (keyup)="onUserInputChange(userInput.value)"
+                            type="text"
+                            formControlName="members"
+                            class="input"
+                            placeholder="Start typing to search users"
+                            required
+                        />
+                        <span
+                            class="required validation-message"
+                            *ngIf="members?.invalid && members?.touched"
+                        >
+                            Please add at least one user
+                        </span>
+                    </div>
+                </div>
                 <hr />
 
                 <div class="field is-grouped">
