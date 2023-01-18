@@ -1,5 +1,5 @@
 <section class="teams">
-    <div class="hero is-medium">
+    <div class="hero is-background-gray is-medium">
         <div class="hero-body has-text-centered">
             <p class="title">Welcome to TaskX<sup>&copy;</sup> teams</p>
             <p class="subtitle">
@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div class="section teams-list">
+    <div class="section teams-list" *ngIf="teamsList.length">
         <h2 class="title">Teams</h2>
         <div
             class="team-cards columns is-variable is-3-desktop is-8-widescreen"
@@ -16,6 +16,20 @@
         >
             <div class="column is-one-third" *ngFor="let team of teamsIterable">
                 <app-team-card [team]="team"></app-team-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-teams hero is-medium" *ngIf="!teamsList.length">
+        <div class="hero-body has-text-centered">
+            <div class="container">
+                <h2 class="subtitle">Looks like you are not part of a team</h2>
+                <button
+                    class="button is-warning"
+                    (click)="dataService.showCreateTeamForm = true"
+                >
+                    Get started
+                </button>
             </div>
         </div>
     </div>

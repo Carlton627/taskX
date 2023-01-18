@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, Subject } from 'rxjs';
+import { User } from 'src/app/shared/models/User';
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class CreateTeamFormComponent implements OnInit {
     });
 
     membersInputTextChanged = new Subject<string>();
+    suggestedUsersList: User[] = [];
 
     constructor(public dataService: DataService) {}
 

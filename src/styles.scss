@@ -9,7 +9,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.task-creator {
+.forms-transition {
     transition: all 0.5s ease;
 }
 
@@ -50,6 +50,10 @@ body {
 
 .text-info {
     color: #0a66c2;
+}
+
+.is-background-gray {
+    background-color: #fafafa;
 }
 
 .twitter-icon,

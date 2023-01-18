@@ -1,13 +1,13 @@
 <div
     [ngClass]="{
-        'task-creator modal': true,
+        'forms-transition modal': true,
         'is-active': dataService.showCreateTeamForm
     }"
 >
     <div class="modal-background overlay" (click)="closeForm()"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-            <p class="modal-card-title">Create a Task</p>
+            <p class="modal-card-title">Create Team</p>
             <button
                 class="delete close-form"
                 aria-label="close"
@@ -62,7 +62,7 @@
                         Add users
                         <span class="required" *ngIf="members?.invalid">*</span>
                     </label>
-                    <div class="control">
+                    <!-- <div class="control">
                         <input
                             #userInput
                             (keyup)="onUserInputChange(userInput.value)"
@@ -78,6 +78,46 @@
                         >
                             Please add at least one user
                         </span>
+                    </div> -->
+                    <div [ngClass]="{ dropdown: true, 'is-active': false }">
+                        <div class="dropdown-trigger">
+                            <div class="field">
+                                <div
+                                    class="control is-expanded has-icons-right"
+                                >
+                                    <input
+                                        #userInput
+                                        (keyup)="
+                                            onUserInputChange(userInput.value)
+                                        "
+                                        class="input users-search"
+                                        type="search"
+                                        placeholder="Start typing to search users"
+                                    />
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="dropdown-menu"
+                            id="dropdown-menu"
+                            role="menu"
+                        >
+                            <div class="dropdown-content">
+                                <a href="#" class="dropdown-item"
+                                    >Dropdown item</a
+                                >
+                                <a href="#" class="dropdown-item"
+                                    >Other dropdown item</a
+                                >
+                                <hr class="dropdown-divider" />
+                                <a href="#" class="dropdown-item"
+                                    >With a divider</a
+                                >
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr />

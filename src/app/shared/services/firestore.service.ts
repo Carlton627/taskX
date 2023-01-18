@@ -76,4 +76,6 @@ export class FirestoreService {
         taskDocRefs.forEach((taskDoc: any) => batch.delete(taskDoc));
         return batch.commit();
     }
+
+    addTeamToFirestore() {}
 }
