@@ -1,0 +1,53 @@
+<div class="card mb-1 noti-card">
+    <header class="card-header">
+        <div class="card-header-title">
+            <div class="media">
+                <div
+                    class="media-left"
+                    *ngIf="notification.invokedBy !== 'system'"
+                >
+                    <figure class="image is-48x48">
+                        <img
+                            src="https://bulma.io/images/placeholders/96x96.png"
+                            alt="Placeholder image"
+                        />
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-6">
+                        {{ notificationText }}
+                    </p>
+                    <p class="subtitle is-6">4 min ago</p>
+                </div>
+            </div>
+        </div>
+        <button
+            class="card-header-icon"
+            *ngIf="notification.isActionable"
+            aria-label="actions"
+            (click)="showNotificationActions = !showNotificationActions"
+        >
+            Actions
+            <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+        </button>
+        <div class="card-header-icon" *ngIf="!notification.isActionable">
+            <button
+                class="button is-danger"
+                (click)="clearNotification(notification.id)"
+            >
+                Dismiss
+            </button>
+        </div>
+    </header>
+    <footer class="card-footer" *ngIf="showNotificationActions">
+        <button class="button is-success card-footer-item">Accept</button>
+        <button
+            class="button is-danger card-footer-item"
+            (click)="clearNotification(notification.id)"
+        >
+            Decline
+        </button>
+    </footer>
+</div>

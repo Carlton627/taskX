@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { globalConstants } from 'src/app/shared/configs/constants';
 import { Team } from 'src/app/shared/models/Team';
 import { DataService } from 'src/app/shared/services/data.service';
 
@@ -48,7 +49,7 @@ export class TeamPageComponent implements OnInit {
     initTeamCardsDisplay() {
         let teamSubList: Team[] = [];
         this.teamsList.forEach((team: Team, index: number) => {
-            if (index % 3 == 0 && index != 0) {
+            if (index % globalConstants.TeamCardsPerPage == 0 && index != 0) {
                 this.teamsIterableCardsList.push(teamSubList);
                 teamSubList = [];
             }

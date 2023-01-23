@@ -20,3 +20,12 @@ export const styleConfigs = Object.freeze({
     TextInfo: 'text-info',
     TextSuccess: 'text-success',
 });
+
+export const globalConstants = Object.freeze({
+    TeamCardsPerPage: 3,
+
+    NotificationTypes: {
+        TEAM_INVITE: 'team-invite',
+        INFO: 'info',
+    },
+});

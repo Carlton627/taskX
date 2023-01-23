@@ -1,3 +1,32 @@
 .app-options {
     width: 35vh;
 }
+
+.notification-icon {
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.notification-icon:hover {
+    cursor: pointer;
+}
+
+.notif-badge {
+    background-color: #f14668;
+    border-radius: 50%;
+    color: white;
+    padding: 1px 5px;
+    font-size: 10px;
+    position: absolute; /* Position the badge within the relatively positioned button */
+    top: 0;
+    right: 0;
+}
+
+.notifications-tray {
+    position: absolute;
+    background-color: transparent;
+    min-width: 500px;
+    max-width: 550px;
+    z-index: 1;
+    right: 0;
+}

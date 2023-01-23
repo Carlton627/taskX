@@ -20,6 +20,7 @@ import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-pa
 import { TeamPageComponent } from './pages/team-page/team-page.component';
 import { TeamCardComponent } from './components/team-card/team-card.component';
 import { CreateTeamFormComponent } from './components/create-team-form/create-team-form.component';
+import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { CreateTeamFormComponent } from './components/create-team-form/create-te
         TeamPageComponent,
         TeamCardComponent,
         CreateTeamFormComponent,
+        NotificationCardComponent,
     ],
     imports: [
         BrowserModule,

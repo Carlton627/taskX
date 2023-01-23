@@ -1,0 +1,43 @@
+####################################################################
+#                     DEV REPORT 23-01-2023                        #
+####################################################################
+
+Component: Create Team Form
+Status: Blocked
+
+    👉 The development of the form component to add teams has been blocked, as cloud firestore 
+        does not support searching of collections out of the box.
+
+    👉 Algolia Search API must be used to create indexes of the collections that have to be searched.
+
+    👉 To use the API, the firebase project requires to be upgraded to the Blaze Plan to gain access to
+        cloud functions.
+
+    👉 The DEV work can resume once the firebase project billing plan has been upgraded to the Blaze plan.
+
+    In order for the users to be added to a team, the team creator needs to have the ability to search users using
+    the app (more specific params can be decided later).
+
+
+Component: Notification System 
+Status: Blocked
+
+    👉 The Notification Systems tentative architecture may rely heavily on Cloud Functions, which requires 
+        the project to be upgraded.
+
+    👉 A front end behavior of notifications have been developed, except for accepting a team invite which can be
+        tested end to end only after the create team form component has been developed.
+
+    This notification system will help the users have a right to choose whether to join a team, and also help them
+    know what is happening on the app (like nearing deadlines, etc).
+
+
+Component: Team Page
+Status: Blocked
+
+    👉 The front end behaviour of the Teams Page has been developed. Further testing can only be done once the user
+        has the ability to create teams.
+
+    👉 Upon clicking on one of the team card, the app should redirect the user to the dashboard of the team.
+
+    

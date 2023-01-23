@@ -42,34 +42,27 @@
             </button>
         </div>
         <ng-container *ngIf="user">
-            <span class="user-signed-in">
-                <div class="navbar-item">
-                    <button
-                        *ngIf="addTaskMode"
-                        class="nav__btn--new-task button is-warning is-light"
-                        (click)="dataService.showAddTaskForm = true"
-                    >
-                        New task
-                    </button>
+            <div class="navbar-item">
+                <button
+                    *ngIf="addTaskMode"
+                    class="nav__btn--new-task button is-warning is-light"
+                    (click)="dataService.showAddTaskForm = true"
+                >
+                    New task
+                </button>
 
-                    <button
-                        *ngIf="!addTaskMode"
-                        class="nav__btn--new-task button is-warning is-light"
-                        (click)="dataService.showCreateTeamForm = true"
-                    >
-                        Create Team
-                    </button>
-                    <!-- Nav bar stuff -->
-                    <!-- A Button and form for creating teams -->
-                    <!-- Create a separate form component for creating teams -->
-                </div>
-            </span>
+                <button
+                    *ngIf="!addTaskMode"
+                    class="nav__btn--new-task button is-warning is-light"
+                    (click)="dataService.showCreateTeamForm = true"
+                >
+                    Create Team
+                </button>
+            </div>
 
-            <div
-                class="user-signed-in hidden navbar-item has-dropdown is-hoverable"
-            >
+            <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link username">
-                    Hi {{ user.firstName }} &nbsp;
+                    Hi {{ user.name.split(' ')[0] }} &nbsp;
                     <img [src]="user.photoURL" alt="" class="user-img" />
                 </a>
                 <div class="navbar-dropdown">
@@ -77,9 +70,31 @@
                         Sign out
                     </a>
                     <hr class="navbar-divider" />
-                    <p class="navbar-item is-warning">TaskX&copy; 1.1.0</p>
+                    <p class="navbar-item">TaskX&copy; 1.1.0</p>
                 </div>
+            </div>
+
+            <div class="navbar-item">
+                <span
+                    [title]="notificationHintText"
+                    class="icon is-medium notification-icon"
+                    (click)="toggleNotificationTray = !toggleNotificationTray"
+                >
+                    <i class="fa-solid fa-bell"></i>
+                    <span *ngIf="notificationCount" class="notif-badge">
+                        {{ notificationCount }}
+                    </span>
+                </span>
             </div>
         </ng-container>
     </div>
 </nav>
+
+<section class="notifications-tray" *ngIf="toggleNotificationTray && user">
+    <ng-container *ngFor="let notification of notifications">
+        <app-notification-card
+            [notification]="notification"
+            (deleteNotification)="deleteNotification($event)"
+        ></app-notification-card>
+    </ng-container>
+</section>

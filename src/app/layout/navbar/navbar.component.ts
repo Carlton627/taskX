@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { globalConstants } from 'src/app/shared/configs/constants';
 import { NavMenuItem } from 'src/app/shared/models/Menus';
+import { Notification } from 'src/app/shared/models/Notification';
 import { User } from 'src/app/shared/models/User';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -14,9 +16,6 @@ import { FirestoreService } from 'src/app/shared/services/firestore.service';
     styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-    user: User | undefined;
-    userSubscription: Subscription | undefined;
-
     constructor(
         private auth: AuthService,
         private afs: FirestoreService,
@@ -30,23 +29,55 @@ export class NavbarComponent implements OnInit, OnDestroy {
         { name: 'Teams', isActive: false, route: '/teams' },
     ];
 
+    user: User | undefined;
+    userSubscription!: Subscription;
     activeNavMenuItem = '';
     addTaskMode = true;
     isSignInCompleteAfterClick = true;
+    notificationCount = 0; // TODO: replace with correct count
+    notificationHintText: string = '';
+    toggleNotificationTray = false;
+
+    notifications: Notification[] = [
+        {
+            id: '1',
+            invokedBy: 'Switzel Fernandes',
+            invokedFor: 'Carlton Rodrigues',
+            createdAt: new Date(),
+            isActionable: true,
+            type: globalConstants.NotificationTypes.TEAM_INVITE,
+            team: 'Whackers',
+        },
+        {
+            id: '2',
+            invokedBy: 'system',
+            invokedFor: 'Carlton Rodrigues',
+            createdAt: new Date(),
+            isActionable: false,
+            type: globalConstants.NotificationTypes.INFO,
+        },
+    ];
 
     ngOnInit(): void {
+        // INFO: Gets currently signed in user
         this.userSubscription = this.auth
             .getUserSubscription()
             .subscribe((user: any) => {
                 this.user = this.dataService.getUserData(user);
             });
 
+        // INFO: Get current route path
         const path = this.location.path() ? this.location.path() : '/home';
         const [currentMenuItem] = this.appOptionsMenu.filter(
             (appOption: NavMenuItem) => {
                 return appOption.route === path;
             }
         );
+
+        // TODO: Load notifications in notifications array and then call other methods
+
+        this.setNotificationCount();
+        this.setNotificationHintText();
         this.checkAppMode(path);
         this.menuItemSelectEvent(currentMenuItem);
     }
@@ -60,7 +91,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.addTaskMode = path === '/teams' ? false : true;
     }
 
-    // TODO: refactor this function to follow generics and place it in util service
+    private setNotificationCount() {
+        this.notificationCount = this.notifications.length;
+    }
+
+    private setNotificationHintText() {
+        if (!this.notificationCount) {
+            this.notificationHintText = 'No new notifications';
+            return;
+        }
+        this.notificationHintText = `You have ${
+            this.notificationCount > 1
+                ? this.notificationCount + ' new notifications'
+                : 'a new notification'
+        } `;
+    }
+
+    deleteNotification(id: string) {
+        const notfIndex = this.notifications.findIndex(
+            (notf: Notification) => notf.id === id
+        );
+        this.notifications.splice(notfIndex, 1);
+    }
+
+    // TODO: refactor this function to follow generics and place it in util service, if required
     menuItemSelectEvent(menuOption: NavMenuItem, navigate = false) {
         // Guard Clause: if menu option isActive is true then do nothing
         if (menuOption.isActive) return;

@@ -16,7 +16,7 @@ export class DataService {
         this.userData = {
             id: user?.uid,
             photoURL: user?.photoURL,
-            firstName: user?.displayName.split(' ')[0],
+            name: user?.displayName,
             email: user?.email,
             creationTime: user?.metadata?.creationTime,
         };
