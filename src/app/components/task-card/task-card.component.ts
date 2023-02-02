@@ -10,19 +10,17 @@ import { UtilService } from 'src/app/shared/services/util.service';
     styleUrls: ['./task-card.component.scss'],
 })
 export class TaskCardComponent implements OnInit {
+    constructor(private afs: FirestoreService, private util: UtilService) {}
+
     @Input() task: any;
 
-    @Output() deletedTaskMetaData: EventEmitter<TaskMetaData> =
-        new EventEmitter();
-    @Output() transistionTaskMetaData: EventEmitter<TaskMetaData> =
-        new EventEmitter();
+    @Output() deletedTaskMetaData = new EventEmitter<TaskMetaData>();
+    @Output() transistionTaskMetaData = new EventEmitter<TaskMetaData>();
 
     styleClass: string = '';
     tagClassName: string = '';
     dateMessage: string = '';
     buttonName: string = '';
-
-    constructor(private afs: FirestoreService, private util: UtilService) {}
 
     private setTaskConfig() {
         if (this.task?.status === taskTypes.TODO_TYPE) {

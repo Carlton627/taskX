@@ -112,6 +112,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
             (notf: Notification) => notf.id === id
         );
         this.notifications.splice(notfIndex, 1);
+        this.setNotificationCount();
+        this.setNotificationHintText();
     }
 
     // TODO: refactor this function to follow generics and place it in util service, if required
@@ -137,7 +139,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     async checkExistingUsers(credential: any) {
-        const userDocSnap = await this.afs.getUserById(credential?.user?.uid);
+        const userDocSnap = await this.afs.getUser(credential?.user?.uid);
         return userDocSnap.exists();
     }
 

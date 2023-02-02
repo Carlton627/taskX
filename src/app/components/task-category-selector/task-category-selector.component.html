@@ -1,0 +1,87 @@
+<div [ngClass]="{ dropdown: true, 'is-active': toggleCategoryMenu }">
+    <div class="dropdown-trigger">
+        <div
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+            (click)="toggleCategoryMenu = !toggleCategoryMenu"
+        >
+            <div class="level" *ngIf="!newCategoryMode">
+                <div class="level-left">
+                    <span class="title is-2"> {{ activeCategory }} </span>
+                </div>
+                <div class="level-right">
+                    <span class="icon is-large">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </div>
+            <div
+                class="level"
+                (click)="$event.stopPropagation()"
+                *ngIf="newCategoryMode"
+            >
+                <div class="level-left">
+                    <input
+                        type="text"
+                        class="input"
+                        [(ngModel)]="newCategory"
+                    />
+                </div>
+                <div class="level-right">
+                    <span class="icon is-large">
+                        <i
+                            style="color: green"
+                            class="fa fa-check"
+                            aria-hidden="true"
+                            (click)="createNewCategory($event)"
+                            *ngIf="!spinners.addCategory"
+                        ></i>
+                        <i
+                            style="color: rgb(152, 204, 152)"
+                            class="fa fa-spinner fa-pulse"
+                            aria-hidden="true"
+                            *ngIf="spinners.addCategory"
+                        ></i>
+                    </span>
+                    <span class="icon is-large">
+                        <i
+                            style="color: #f24a44"
+                            class="fa fa-times"
+                            aria-hidden="true"
+                            (click)="toggleAddCategory($event, 'close')"
+                        ></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content">
+            <a
+                *ngFor="let category of taskCategories"
+                class="dropdown-item"
+                (click)="onMenuItemSelect(category)"
+            >
+                <div class="level">
+                    <div class="level-left">{{ category }}</div>
+                    <div class="level-right">
+                        <i
+                            (click)="deleteCategory($event, category)"
+                            class="fa fa-trash"
+                            aria-hidden="true"
+                            *ngIf="category !== DEFAULT_CATEGORY"
+                        ></i>
+                    </div>
+                </div>
+            </a>
+
+            <hr class="dropdown-divider" />
+            <button
+                class="button is-warning is-light dropdown-item"
+                (click)="toggleAddCategory($event, 'open')"
+            >
+                + Add new category
+            </button>
+        </div>
+    </div>
+</div>

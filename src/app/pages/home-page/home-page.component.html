@@ -1,3 +1,12 @@
+<div class="m-3">
+    <app-task-category-selector
+        [taskCategories]="taskCategories"
+        (selectedCategory)="onCategoryChange($event)"
+    ></app-task-category-selector>
+</div>
+
+<hr class="dropdown-divider" />
+
 <section class="task-list">
     <div class="columns">
         <div class="todo column is-one-third">
@@ -77,4 +86,6 @@
 <app-add-task-form
     *ngIf="dataService.showAddTaskForm"
     (taskAdded)="addNewTaskToList($event)"
+    [taskCategories]="taskCategories"
+    [activeCategory]="activeCategory"
 ></app-add-task-form>

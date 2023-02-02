@@ -13,6 +13,8 @@ import {
     writeBatch,
     Firestore,
     orderBy,
+    arrayUnion,
+    arrayRemove,
 } from '@angular/fire/firestore';
 import { Task } from '../models/Task';
 import { AuthService } from './auth.service';
@@ -28,9 +30,9 @@ export class FirestoreService {
         });
     }
 
-    getUserById(id: any) {
+    getUser(id?: string) {
         // INFO: returns a promise
-        const docRef = doc(this.afs, 'users', id);
+        const docRef = doc(this.afs, 'users', id || this.userId);
         return getDoc(docRef);
     }
 
@@ -49,10 +51,11 @@ export class FirestoreService {
         return setDoc(taskDocRef, task);
     }
 
-    getTasksFromFirestore() {
+    getTasksFromFirestore(categoryFilter: string) {
         const q = query(
             collection(this.afs, `users/${this.userId}/tasks`),
             where('author', '==', this.userId),
+            where('category', '==', categoryFilter),
             orderBy('createdAt', 'desc')
         );
         return getDocs(q);
@@ -78,4 +81,16 @@ export class FirestoreService {
     }
 
     addTeamToFirestore() {}
+
+    addCategoryToFirestore(category: string) {
+        const userDocRef = doc(this.afs, 'users', this.userId);
+        return updateDoc(userDocRef, {
+            taskCategories: arrayUnion(category),
+        });
+    }
+
+    removeCategoryFromFirestore(category: string) {
+        const userDocRef = doc(this.afs, 'users', this.userId);
+        return updateDoc(userDocRef, { taskCategories: arrayRemove(category) });
+    }
 }

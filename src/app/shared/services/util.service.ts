@@ -13,4 +13,8 @@ export class UtilService {
     findDaysLeft(dateDiff: number) {
         return Math.ceil(dateDiff / (1000 * 3600 * 24));
     }
+
+    getElementIndex<T>(arr: T[], findElement: T) {
+        return arr.findIndex((element: any) => element === findElement);
+    }
 }

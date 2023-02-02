@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { Task, TaskMetaData, TaskState } from 'src/app/shared/models/Task';
-import { taskTypes } from 'src/app/shared/configs/constants';
+import { globalConstants, taskTypes } from 'src/app/shared/configs/constants';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
     selector: 'app-home-page',
@@ -16,6 +17,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
         completed: [],
     };
     loadingSpinner = true;
+    taskCategories: string[] = ['General'];
+    activeCategory: string = globalConstants.DEFAULT_CATEGORY;
 
     constructor(
         private afs: FirestoreService,
@@ -23,18 +26,55 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.afs.getTasksFromFirestore().then((tasks: any) => {
-            if (!tasks) return;
-            tasks.forEach((task: any) => {
-                const taskData = task.data();
-                const taskList = this.filterTaskStateByType(taskData.status);
-                taskList.push(taskData);
-            });
-            this.loadingSpinner = false;
+        // INFO: getting task categories
+        this.afs.getUser().then(user => {
+            const userData = user.data();
+            if (userData)
+                this.taskCategories = [
+                    ...this.taskCategories,
+                    ...userData['taskCategories'],
+                ];
         });
+
+        // INFO: getting user tasks
+        this.populateTaskList();
     }
 
     ngOnDestroy(): void {}
+
+    private populateTaskList(categoryFilter?: string) {
+        this.clearTaskState();
+        this.loadingSpinner = true;
+        this.activeCategory =
+            categoryFilter || globalConstants.DEFAULT_CATEGORY;
+        this.afs
+            .getTasksFromFirestore(
+                categoryFilter || globalConstants.DEFAULT_CATEGORY
+            )
+            .then((tasks: any) => {
+                if (!tasks) return;
+                tasks.forEach((task: any) => {
+                    const taskData = task.data();
+                    const taskList = this.filterTaskStateByType(
+                        taskData.status
+                    );
+                    taskList.push(taskData);
+                });
+                this.loadingSpinner = false;
+            });
+    }
+
+    private clearTaskState() {
+        this.tasks = {
+            todo: [],
+            inProgress: [],
+            completed: [],
+        };
+    }
+
+    onCategoryChange(category: string) {
+        this.populateTaskList(category);
+    }
 
     deleteTaskFromTaskList(taskMetaData: TaskMetaData) {
         const { taskId, taskType } = taskMetaData;
@@ -97,6 +137,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     addNewTaskToList(task: Task) {
+        // TODO: Add a info popup that says where the new task was added
+        if (task.category !== this.activeCategory) return;
         const taskList = this.filterTaskStateByType(task.status);
         taskList.push(task);
     }

@@ -20,23 +20,59 @@
                 [formGroup]="addTaskForm"
                 (ngSubmit)="addTask()"
             >
-                <div class="field">
-                    <label class="label">
-                        Choose task status
-                        <span class="required" *ngIf="status?.invalid">*</span>
-                    </label>
-                    <div class="control">
-                        <div class="select">
-                            <select
-                                formControlName="status"
-                                class="task-status"
-                            >
-                                <option value="todo">To-do</option>
-                                <option value="inProgress">In progress</option>
-                            </select>
+                <div class="level">
+                    <div class="level-left">
+                        <div class="field">
+                            <label class="label">
+                                Choose task status
+                                <span class="required" *ngIf="status?.invalid"
+                                    >*</span
+                                >
+                            </label>
+                            <div class="control">
+                                <div class="select">
+                                    <select
+                                        formControlName="status"
+                                        class="task-status"
+                                    >
+                                        <option value="todo">To-do</option>
+                                        <option value="inProgress">
+                                            In progress
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="field">
+                            <label class="label">
+                                Choose Category
+                                <span class="required" *ngIf="category?.invalid"
+                                    >*</span
+                                >
+                            </label>
+                            <div class="control">
+                                <div class="select">
+                                    <select
+                                        formControlName="category"
+                                        class="task-category"
+                                    >
+                                        <option
+                                            *ngFor="
+                                                let category of taskCategories
+                                            "
+                                            [value]="category"
+                                        >
+                                            {{ category }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="field">
                     <label class="label">
                         Task Name
@@ -173,7 +209,19 @@
                                 !isAddTaskComplete
                             "
                         >
-                            Submit
+                            <div class="level">
+                                <div class="level-left">
+                                    <span class="level-item">Submit</span>
+                                </div>
+                                &nbsp;
+                                <div class="level-right">
+                                    <i
+                                        *ngIf="!isAddTaskComplete"
+                                        class="fa-solid fa-spinner fa-pulse level-item"
+                                    >
+                                    </i>
+                                </div>
+                            </div>
                         </button>
                     </div>
                     <div class="control">

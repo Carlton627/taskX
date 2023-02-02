@@ -21,6 +21,7 @@ import { TeamPageComponent } from './pages/team-page/team-page.component';
 import { TeamCardComponent } from './components/team-card/team-card.component';
 import { CreateTeamFormComponent } from './components/create-team-form/create-team-form.component';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { TaskCategorySelectorComponent } from './components/task-category-selector/task-category-selector.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import { NotificationCardComponent } from './components/notification-card/notifi
         TeamCardComponent,
         CreateTeamFormComponent,
         NotificationCardComponent,
+        TaskCategorySelectorComponent,
     ],
     imports: [
         BrowserModule,

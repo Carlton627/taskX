@@ -24,6 +24,8 @@ export const styleConfigs = Object.freeze({
 export const globalConstants = Object.freeze({
     TeamCardsPerPage: 3,
 
+    DEFAULT_CATEGORY: 'General',
+
     NotificationTypes: {
         TEAM_INVITE: 'team-invite',
         INFO: 'info',

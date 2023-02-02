@@ -6,6 +6,7 @@ export interface Task {
     name: string;
     setDeadline: boolean;
     status: string;
+    category: string;
     startsOn?: string;
     deadline?: string;
     slug?: string;
