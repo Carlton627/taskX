@@ -1,0 +1,25 @@
+####################################################################
+#                     DEV REPORT 02-02-2023                        #
+####################################################################
+
+Status: Completed with residual work left
+Component: Task Category Selector
+
+    👉 This the main component which allows user to select, delete and create new categories.
+    👉 Future Scope: Allow user to edit the category name.
+
+
+Pending Work:
+
+Handle what happens to the tasks in the category when the category is deleted:
+    Provide options to shift to another category / general 
+    Delete all tasks in deleted category
+    If no tasks are present in deleted category, do nothing
+
+Make sure duplicate categories can't be created
+
+Pop ups to show category created 
+
+Pop ups to show which categories the task was added in case the active category is not the same as 
+the create task category.
+
