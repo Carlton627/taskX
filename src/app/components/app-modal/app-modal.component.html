@@ -1,0 +1,49 @@
+<div [ngClass]="{ modal: true, 'is-active': modalService.modalActive }">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">{{ modalTitle }}</p>
+            <button
+                class="delete"
+                aria-label="close"
+                (click)="modalService.closeModal()"
+            ></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="subtitle is-6" [innerHTML]="modalMessage"></div>
+        </section>
+        <footer class="modal-card-foot">
+            <div
+                class="category-delete-options"
+                *ngIf="
+                    modalService.modalType === MODAL_TYPES.IS_CATEGORY_DELETE.id
+                "
+            >
+                <button
+                    class="button is-danger"
+                    (click)="
+                        modalService.sendAction(
+                            MODAL_TYPES.IS_CATEGORY_DELETE.actions.deleteAll
+                        )
+                    "
+                >
+                    Delete All
+                </button>
+                <button
+                    class="button"
+                    (click)="
+                        modalService.sendAction(
+                            MODAL_TYPES.IS_CATEGORY_DELETE.actions.transfer
+                        )
+                    "
+                >
+                    Transfer Tasks
+                </button>
+                <button class="button" (click)="modalService.closeModal()">
+                    Cancel
+                </button>
+                <!-- TODO: Handle these actions -->
+            </div>
+        </footer>
+    </div>
+</div>

@@ -1,6 +1,6 @@
-####################################################################
-#                     DEV REPORT 02-02-2023                        #
-####################################################################
+######################################################################
+#                      DEV REPORT 02-02-2023                         #
+######################################################################
 
 Status: Completed with residual work left
 Component: Task Category Selector
@@ -16,10 +16,10 @@ Handle what happens to the tasks in the category when the category is deleted:
     Delete all tasks in deleted category
     If no tasks are present in deleted category, do nothing
 
-Make sure duplicate categories can't be created
+Make sure duplicate categories can't be created - done
 
-Pop ups to show category created 
+Pop ups to show category created - done
 
 Pop ups to show which categories the task was added in case the active category is not the same as 
-the create task category.
+the create task category. - done
 

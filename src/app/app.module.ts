@@ -22,6 +22,7 @@ import { TeamCardComponent } from './components/team-card/team-card.component';
 import { CreateTeamFormComponent } from './components/create-team-form/create-team-form.component';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { TaskCategorySelectorComponent } from './components/task-category-selector/task-category-selector.component';
+import { AppModalComponent } from './components/app-modal/app-modal.component';
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { TaskCategorySelectorComponent } from './components/task-category-select
         CreateTeamFormComponent,
         NotificationCardComponent,
         TaskCategorySelectorComponent,
+        AppModalComponent,
     ],
     imports: [
         BrowserModule,

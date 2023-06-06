@@ -15,6 +15,6 @@ export class UtilService {
     }
 
     getElementIndex<T>(arr: T[], findElement: T) {
-        return arr.findIndex((element: any) => element === findElement);
+        return arr.findIndex((element: T) => element === findElement);
     }
 }

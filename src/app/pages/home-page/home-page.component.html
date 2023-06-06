@@ -1,6 +1,7 @@
 <div class="m-3">
     <app-task-category-selector
         [taskCategories]="taskCategories"
+        [areTasksPresent]="tasksCount > 0"
         (selectedCategory)="onCategoryChange($event)"
     ></app-task-category-selector>
 </div>

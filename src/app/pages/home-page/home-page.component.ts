@@ -2,8 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { Task, TaskMetaData, TaskState } from 'src/app/shared/models/Task';
-import { globalConstants, taskTypes } from 'src/app/shared/configs/constants';
-import { UtilService } from 'src/app/shared/services/util.service';
+import {
+    globalConstants,
+    messages,
+    taskTypes,
+} from 'src/app/shared/configs/constants';
+import { ToasterService } from 'src/app/shared/services/toaster.service';
 
 @Component({
     selector: 'app-home-page',
@@ -19,10 +23,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
     loadingSpinner = true;
     taskCategories: string[] = ['General'];
     activeCategory: string = globalConstants.DEFAULT_CATEGORY;
+    tasksCount = 0;
 
     constructor(
         private afs: FirestoreService,
-        public dataService: DataService
+        public dataService: DataService,
+        private toast: ToasterService
     ) {}
 
     ngOnInit(): void {
@@ -48,10 +54,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.activeCategory =
             categoryFilter || globalConstants.DEFAULT_CATEGORY;
         this.afs
-            .getTasksFromFirestore(
-                categoryFilter || globalConstants.DEFAULT_CATEGORY
-            )
+            .getTasksFromFirestore(this.activeCategory)
             .then((tasks: any) => {
+                this.tasksCount = tasks.size || 0;
                 if (!tasks) return;
                 tasks.forEach((task: any) => {
                     const taskData = task.data();
@@ -80,6 +85,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         const { taskId, taskType } = taskMetaData;
         const taskList = this.filterTaskStateByType(taskType);
         this.findTaskIndexDelete(taskList, taskId);
+        this.tasksCount--;
     }
 
     private findTaskIndexDelete(taskList: Task[], taskId: string) {
@@ -101,13 +107,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
         }
     }
 
-    /**
-     * Finds task index in state object and transitions it from taskList to toTaskList using the toTaskType parameter
-     * @param taskList
-     * @param toTaskList
-     * @param taskId
-     * @param toTaskType
-     */
     private findTaskIndexTransition(
         taskList: Task[],
         taskId: string,
@@ -130,6 +129,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     async deleteAllTasks(taskList: Task[]) {
         try {
             await this.afs.deleteAllTasksFromFirestore(taskList);
+            this.tasksCount -= taskList.length;
             taskList.splice(0, taskList.length);
         } catch (error) {
             console.log(error);
@@ -137,9 +137,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     addNewTaskToList(task: Task) {
-        // TODO: Add a info popup that says where the new task was added
-        if (task.category !== this.activeCategory) return;
+        if (task.category !== this.activeCategory) {
+            this.toast.showInfo(
+                messages.toastMessages.taskAddedToCategory + task.category
+            );
+            return;
+        }
         const taskList = this.filterTaskStateByType(task.status);
+        this.tasksCount++;
         taskList.push(task);
     }
 }
