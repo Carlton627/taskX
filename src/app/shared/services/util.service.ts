@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TaskStateModel } from '../models/Task';
 
 @Injectable({
     providedIn: 'root',
@@ -16,5 +17,11 @@ export class UtilService {
 
     getElementIndex<T>(arr: T[], findElement: T) {
         return arr.findIndex((element: T) => element === findElement);
+    }
+
+    filterTaskStateByType(taskType: string): keyof TaskStateModel {
+        type ObjectKey = keyof TaskStateModel;
+        const type = taskType as ObjectKey;
+        return type;
     }
 }

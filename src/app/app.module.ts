@@ -8,6 +8,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { NgxsModule } from '@ngxs/store';
 
 // Components
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -23,6 +24,7 @@ import { CreateTeamFormComponent } from './components/create-team-form/create-te
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { TaskCategorySelectorComponent } from './components/task-category-selector/task-category-selector.component';
 import { AppModalComponent } from './components/app-modal/app-modal.component';
+import { TaskState } from './shared/store/state/task.state';
 
 @NgModule({
     declarations: [
@@ -49,6 +51,7 @@ import { AppModalComponent } from './components/app-modal/app-modal.component';
         provideFirestore(() => getFirestore()),
         FormsModule,
         ReactiveFormsModule,
+        NgxsModule.forRoot([TaskState]),
     ],
     providers: [],
     bootstrap: [AppComponent],

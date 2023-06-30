@@ -62,5 +62,12 @@ export const globalConstants = Object.freeze({
                 transfer: 1,
             },
         },
+
+        SELECT_CATEGORY: {
+            id: 'SELECT_CATEGORY',
+            actions: {
+                transfer: 0,
+            },
+        },
     },
 });

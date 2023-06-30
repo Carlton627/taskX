@@ -1,13 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { Task, TaskMetaData, TaskState } from 'src/app/shared/models/Task';
+import { Task, TaskMetaData, TaskStateModel } from 'src/app/shared/models/Task';
 import {
     globalConstants,
     messages,
     taskTypes,
 } from 'src/app/shared/configs/constants';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
+import { TaskState } from 'src/app/shared/store/state/task.state';
+import { Observable } from 'rxjs';
+import { Store, Select } from '@ngxs/store';
+import {
+    ClearTasks,
+    GetTasks,
+} from 'src/app/shared/store/actions/task.actions';
+import { TaskService } from 'src/app/shared/services/task.service';
 
 @Component({
     selector: 'app-home-page',
@@ -15,7 +23,7 @@ import { ToasterService } from 'src/app/shared/services/toaster.service';
     styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-    tasks: TaskState = {
+    tasks: TaskStateModel = {
         todo: [],
         inProgress: [],
         completed: [],
@@ -28,7 +36,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     constructor(
         private afs: FirestoreService,
         public dataService: DataService,
-        private toast: ToasterService
+        private toast: ToasterService,
+        public taskService: TaskService
     ) {}
 
     ngOnInit(): void {
@@ -48,36 +57,15 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {}
 
-    private populateTaskList(categoryFilter?: string) {
-        this.clearTaskState();
+    private async populateTaskList(categoryFilter = '') {
         this.loadingSpinner = true;
-        this.activeCategory =
-            categoryFilter || globalConstants.DEFAULT_CATEGORY;
-        this.afs
-            .getTasksFromFirestore(this.activeCategory)
-            .then((tasks: any) => {
-                this.tasksCount = tasks.size || 0;
-                if (!tasks) return;
-                tasks.forEach((task: any) => {
-                    const taskData = task.data();
-                    const taskList = this.filterTaskStateByType(
-                        taskData.status
-                    );
-                    taskList.push(taskData);
-                });
-                this.loadingSpinner = false;
-            });
-    }
-
-    private clearTaskState() {
-        this.tasks = {
-            todo: [],
-            inProgress: [],
-            completed: [],
-        };
+        const saveState = true;
+        await this.taskService.getAllTasks(categoryFilter, saveState);
+        this.loadingSpinner = false;
     }
 
     onCategoryChange(category: string) {
+        this.activeCategory = category;
         this.populateTaskList(category);
     }
 
@@ -121,30 +109,25 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     private filterTaskStateByType(taskType: string) {
-        type ObjectKey = keyof TaskState;
+        type ObjectKey = keyof TaskStateModel;
         const type = taskType as ObjectKey;
         return this.tasks[type];
     }
 
-    async deleteAllTasks(taskList: Task[]) {
+    async deleteAllTasks(taskStatus: string) {
         try {
-            await this.afs.deleteAllTasksFromFirestore(taskList);
-            this.tasksCount -= taskList.length;
-            taskList.splice(0, taskList.length);
+            await this.taskService.deleteTasksByStatus(taskStatus);
         } catch (error) {
             console.log(error);
         }
     }
 
-    addNewTaskToList(task: Task) {
-        if (task.category !== this.activeCategory) {
+    addNewTaskToList(taskCategory: string) {
+        if (taskCategory !== this.activeCategory) {
             this.toast.showInfo(
-                messages.toastMessages.taskAddedToCategory + task.category
+                messages.toastMessages.taskAddedToCategory + taskCategory
             );
             return;
         }
-        const taskList = this.filterTaskStateByType(task.status);
-        this.tasksCount++;
-        taskList.push(task);
     }
 }

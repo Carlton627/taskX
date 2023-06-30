@@ -1,7 +1,6 @@
 <div class="m-3">
     <app-task-category-selector
         [taskCategories]="taskCategories"
-        [areTasksPresent]="tasksCount > 0"
         (selectedCategory)="onCategoryChange($event)"
     ></app-task-category-selector>
 </div>
@@ -18,14 +17,14 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(tasks.todo)"
-                        *ngIf="tasks.todo.length"
+                        (click)="deleteAllTasks('todo')"
+                        *ngIf="taskService.todoLength$ | async"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let todo of tasks.todo">
+            <ng-container *ngFor="let todo of taskService.todoTasks$ | async">
                 <app-task-card
                     [task]="todo"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
@@ -41,14 +40,16 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(tasks.inProgress)"
-                        *ngIf="tasks.inProgress.length"
+                        (click)="deleteAllTasks('inProgress')"
+                        *ngIf="taskService.inProgressLength$ | async"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let inProgress of tasks.inProgress">
+            <ng-container
+                *ngFor="let inProgress of taskService.inProgressTasks$ | async"
+            >
                 <app-task-card
                     [task]="inProgress"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
@@ -64,14 +65,16 @@
                 <div class="level-right">
                     <button
                         class="button delete-all is-danger is-light level-item"
-                        (click)="deleteAllTasks(tasks.completed)"
-                        *ngIf="tasks.completed.length"
+                        (click)="deleteAllTasks('completed')"
+                        *ngIf="taskService.completedLength$ | async"
                     >
                         Delete all
                     </button>
                 </div>
             </div>
-            <ng-container *ngFor="let completed of tasks.completed">
+            <ng-container
+                *ngFor="let completed of taskService.completedTasks$ | async"
+            >
                 <app-task-card
                     [task]="completed"
                     (deletedTaskMetaData)="deleteTaskFromTaskList($event)"

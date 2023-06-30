@@ -98,3 +98,49 @@
 </div>
 
 <app-modal [modalMessage]="warningMessage" [modalTitle]="'Warning'"></app-modal>
+
+<div [ngClass]="{ modal: true, 'is-active': showCategoryShiftMenu }">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Select Category</p>
+            <button
+                class="delete"
+                aria-label="close"
+                (click)="showCategoryShiftMenu = false"
+            ></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="select is-link">
+                <select [(ngModel)]="shiftToCategory">
+                    <option
+                        *ngFor="let category of shiftToTaskCategories"
+                        [value]="category"
+                    >
+                        {{ category }}
+                    </option>
+                </select>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button
+                class="button is-danger"
+                [disabled]="disableActionsOnShiftMenu"
+                (click)="
+                    modalService.sendOption(
+                        modalTypes.SELECT_CATEGORY.actions.transfer
+                    )
+                "
+            >
+                Transfer
+            </button>
+            <button
+                class="button"
+                [disabled]="disableActionsOnShiftMenu"
+                (click)="showCategoryShiftMenu = false"
+            >
+                Cancel
+            </button>
+        </footer>
+    </div>
+</div>

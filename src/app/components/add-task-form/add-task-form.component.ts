@@ -7,7 +7,7 @@ import {
 } from 'src/app/shared/configs/constants';
 import { Task } from 'src/app/shared/models/Task';
 import { DataService } from 'src/app/shared/services/data.service';
-import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { UtilService } from 'src/app/shared/services/util.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -19,13 +19,13 @@ import { v4 as uuidv4 } from 'uuid';
 export class AddTaskFormComponent implements OnInit {
     constructor(
         public dataService: DataService,
-        private afs: FirestoreService,
+        private taskService: TaskService,
         private util: UtilService
     ) {}
 
     @Input() taskCategories!: string[];
     @Input() activeCategory!: string;
-    @Output() taskAdded = new EventEmitter<Task>();
+    @Output() taskAdded = new EventEmitter<string>();
 
     enableDates = false;
     dateErrors = errors.dateInputErrors;
@@ -180,8 +180,11 @@ export class AddTaskFormComponent implements OnInit {
         try {
             // disable submit button
             this.isAddTaskComplete = false;
-            await this.afs.addTaskToFirestore(newTask);
-            this.taskAdded.emit(newTask);
+            this.taskAdded.emit(newTask.category);
+
+            const saveState = this.activeCategory === newTask.category;
+
+            await this.taskService.addNewTask(newTask, saveState);
             setTimeout(() => {
                 this.addTaskForm.reset();
                 this.dataService.showAddTaskForm = false;

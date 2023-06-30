@@ -19,7 +19,7 @@ export interface TaskMetaData {
     toTaskType?: string;
 }
 
-export interface TaskState {
+export interface TaskStateModel {
     todo: Task[];
     inProgress: Task[];
     completed: Task[];

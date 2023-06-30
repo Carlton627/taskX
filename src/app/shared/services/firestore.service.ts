@@ -15,6 +15,8 @@ import {
     orderBy,
     arrayUnion,
     arrayRemove,
+    DocumentReference,
+    DocumentData,
 } from '@angular/fire/firestore';
 import { Task } from '../models/Task';
 import { AuthService } from './auth.service';
@@ -71,12 +73,25 @@ export class FirestoreService {
         return updateDoc(taskDocRef, { status: toTaskType });
     }
 
-    deleteAllTasksFromFirestore(taskList: Task[]) {
+    deleteAllTasksFirestore(taskList: Task[]) {
         const batch = writeBatch(this.afs);
         const taskDocRefs = taskList.map((task: Task) =>
             doc(this.afs, `users/${this.userId}/tasks`, task.id)
         );
-        taskDocRefs.forEach((taskDoc: any) => batch.delete(taskDoc));
+        taskDocRefs.forEach((taskDoc: DocumentReference<DocumentData>) =>
+            batch.delete(taskDoc)
+        );
+        return batch.commit();
+    }
+
+    updateAllTasksFirestore(taskList: Task[], updateObject: any) {
+        const batch = writeBatch(this.afs);
+        const taskDocRefs = taskList.map((task: Task) =>
+            doc(this.afs, `users/${this.userId}/tasks`, task.id)
+        );
+        taskDocRefs.forEach((taskDoc: DocumentReference<DocumentData>) => {
+            batch.update(taskDoc, updateObject);
+        });
         return batch.commit();
     }
 
