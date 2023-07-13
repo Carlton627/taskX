@@ -12,9 +12,9 @@ Component: Task Category Selector
 Pending Work:
 
 Handle what happens to the tasks in the category when the category is deleted:
-    Provide options to shift to another category / general 
-    Delete all tasks in deleted category
-    If no tasks are present in deleted category, do nothing
+    Provide options to shift to another category / general - complete
+    Delete all tasks in deleted category - complete
+    If no tasks are present in deleted category, do nothing - complete
 
 Make sure duplicate categories can't be created - done
 
@@ -22,4 +22,15 @@ Pop ups to show category created - done
 
 Pop ups to show which categories the task was added in case the active category is not the same as 
 the create task category. - done
+
+
+Update 13/07/23:
+
+Task Category basic features are completed, most of the testing scenarios were covered:
+
+Scenarios:
+    - Add a task to it, then delete the category and transfer tasks to another category when the category is active.
+    - Add a task to it, then delete the category and transfer tasks to another category when the other category is active.
+    - Try the same by adding no tasks
+    - Try the same for delete all
 

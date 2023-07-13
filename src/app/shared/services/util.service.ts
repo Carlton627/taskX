@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TaskStateModel } from '../models/Task';
+import { taskTypes } from '../configs/constants';
 
 @Injectable({
     providedIn: 'root',
@@ -23,5 +24,12 @@ export class UtilService {
         type ObjectKey = keyof TaskStateModel;
         const type = taskType as ObjectKey;
         return type;
+    }
+
+    getNewTaskType(oldTaskType: string) {
+        if (oldTaskType === taskTypes.TODO_TYPE) {
+            return taskTypes.INPROGRESS_TYPE;
+        }
+        return taskTypes.COMPLETED_TYPE;
     }
 }

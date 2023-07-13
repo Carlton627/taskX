@@ -1,5 +1,5 @@
-import { State, Action, StateContext, Select, Selector } from '@ngxs/store';
-import { TaskStateModel, Task } from '../../models/Task';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { TaskStateModel, Task, TaskMetaData } from '../../models/Task';
 import {
     AddTask,
     GetTasks,
@@ -7,6 +7,7 @@ import {
     DeleteAllTasks,
     TransitionTask,
     ShiftTasks,
+    DeleteTask,
 } from '../actions/task.actions';
 import { UtilService } from '../../services/util.service';
 import { taskTypes } from '../../configs/constants';
@@ -24,7 +25,7 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class TaskState {
-    constructor() {}
+    constructor(private util: UtilService) {}
 
     @Selector()
     static getTodoTasks(state: TaskStateModel): Task[] {
@@ -155,5 +156,77 @@ export class TaskState {
             inProgress: [...inProgress, ...taskState.inProgress],
             completed: [...completed, ...taskState.completed],
         });
+    }
+
+    @Action(TransitionTask)
+    transitionTask(
+        ctx: StateContext<TaskStateModel>,
+        { taskMetaData }: TransitionTask
+    ) {
+        const taskState = ctx.getState();
+        const fromStatus = this.util.filterTaskStateByType(
+            taskMetaData.taskType
+        );
+        const toStatus = this.util.filterTaskStateByType(
+            taskMetaData.toTaskType || ''
+        );
+        const transitionedTask = taskState[fromStatus].find(
+            (task: Task) => task.id === taskMetaData.taskId
+        );
+
+        if (!transitionedTask) return;
+
+        transitionedTask.status = taskMetaData.toTaskType || '';
+
+        const updatedFromTaskList = taskState[fromStatus].filter(
+            (task: Task) => task.id !== taskMetaData.taskId
+        );
+
+        // tasks with status to which task will go
+        const updatedToTaskList = [transitionedTask, ...taskState[toStatus]];
+
+        if (taskMetaData.taskType === taskTypes.TODO_TYPE) {
+            ctx.patchState({
+                todo: updatedFromTaskList,
+                inProgress: updatedToTaskList,
+                completed: taskState.completed,
+            });
+        } else if (taskMetaData.taskType === taskTypes.INPROGRESS_TYPE) {
+            ctx.patchState({
+                todo: taskState.todo,
+                inProgress: updatedFromTaskList,
+                completed: updatedToTaskList,
+            });
+        }
+    }
+
+    @Action(DeleteTask)
+    deleteTask(
+        ctx: StateContext<TaskStateModel>,
+        { taskMetaData }: DeleteTask
+    ) {
+        const taskState = ctx.getState();
+        const status = this.util.filterTaskStateByType(taskMetaData.taskType);
+
+        const updatedTaskList = taskState[status].filter(
+            (task: Task) => task.id !== taskMetaData.taskId
+        );
+
+        if (taskMetaData.taskType === taskTypes.TODO_TYPE) {
+            ctx.patchState({
+                ...taskState,
+                todo: updatedTaskList,
+            });
+        } else if (taskMetaData.taskType === taskTypes.INPROGRESS_TYPE) {
+            ctx.patchState({
+                ...taskState,
+                inProgress: updatedTaskList,
+            });
+        } else if (taskMetaData.taskType === taskTypes.COMPLETED_TYPE) {
+            ctx.patchState({
+                ...taskState,
+                completed: updatedTaskList,
+            });
+        }
     }
 }

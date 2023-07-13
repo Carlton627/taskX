@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { taskTypes, styleConfigs } from 'src/app/shared/configs/constants';
-import { TaskMetaData } from 'src/app/shared/models/Task';
-import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
@@ -10,12 +9,9 @@ import { UtilService } from 'src/app/shared/services/util.service';
     styleUrls: ['./task-card.component.scss'],
 })
 export class TaskCardComponent implements OnInit {
-    constructor(private afs: FirestoreService, private util: UtilService) {}
+    constructor(private taskService: TaskService, private util: UtilService) {}
 
-    @Input() task: any;
-
-    @Output() deletedTaskMetaData = new EventEmitter<TaskMetaData>();
-    @Output() transistionTaskMetaData = new EventEmitter<TaskMetaData>();
+    @Input() task!: any;
 
     styleClass: string = '';
     tagClassName: string = '';
@@ -34,13 +30,6 @@ export class TaskCardComponent implements OnInit {
         }
     }
 
-    private getNewTaskType(oldTaskType: string) {
-        if (oldTaskType === taskTypes.TODO_TYPE) {
-            return taskTypes.INPROGRESS_TYPE;
-        }
-        return taskTypes.COMPLETED_TYPE;
-    }
-
     ngOnInit(): void {
         this.setTaskConfig();
         if (this.task?.setDeadline) this.setDeadlineMessage();
@@ -48,8 +37,7 @@ export class TaskCardComponent implements OnInit {
 
     async deleteTask(taskId: string, taskType: string) {
         try {
-            await this.afs.deleteTaskFromFirestore(taskId);
-            this.deletedTaskMetaData.emit({ taskId, taskType });
+            await this.taskService.deleteTask({ taskId, taskType });
         } catch (error) {
             console.log(error);
         }
@@ -57,9 +45,12 @@ export class TaskCardComponent implements OnInit {
 
     async transitionTask(taskId: string, taskType: string) {
         try {
-            const toTaskType = this.getNewTaskType(taskType);
-            await this.afs.updateTaskStatus(taskId, toTaskType);
-            this.transistionTaskMetaData.emit({ taskId, taskType, toTaskType });
+            const toTaskType = this.util.getNewTaskType(taskType);
+            await this.taskService.transitionTask({
+                taskId,
+                taskType,
+                toTaskType,
+            });
         } catch (error) {
             console.log(error);
         }

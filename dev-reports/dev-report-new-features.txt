@@ -1,0 +1,18 @@
+######################################################################
+#                      DEV REPORT 13-07-2023                         #
+######################################################################
+
+Proposed new features for taskX
+1. Priorities feature to help with task management. High Prio & Low Prio
+2. Syncing with Calendar
+3. How to schedule a new task in calendar based on free time blocks
+4. Creation of teams in TaskX - Paid feature
+5. Reminders and alert for high prio tasks, or tasks nearing deadlines
+6. Integration with other apps? Research on this
+7. Insights columns for productivity based on tasks completed
+8. Time tracking for tasks like JIRA
+9. Note taking feature for each task and even in general on the page
+10. Visualization and stats for users on how they are performing on their tasks
+11. Have subtasks for tasks
+12. Have tracking for billable work hours - Get more clarity from Elsa
+13. Have a provision to shift deadlines if the deadline has been missed and shift all the other task deadline which are in a series - Might have to add a new data property for this

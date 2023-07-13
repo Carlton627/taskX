@@ -6,12 +6,13 @@ import {
     AddTask,
     ClearTasks,
     DeleteAllTasks,
+    DeleteTask,
     GetTasks,
     ShiftTasks,
     TransitionTask,
 } from '../store/actions/task.actions';
 import { globalConstants, taskTypes } from '../configs/constants';
-import { Task } from '../models/Task';
+import { Task, TaskMetaData } from '../models/Task';
 import { FirestoreService } from './firestore.service';
 
 @Injectable({
@@ -139,7 +140,15 @@ export class TaskService {
         }
     }
 
-    deleteTask() {}
+    async deleteTask(taskMetaData: TaskMetaData) {
+        this.store.dispatch(new DeleteTask(taskMetaData));
+        await this.afs.deleteTaskFromFirestore(taskMetaData.taskId);
+    }
 
-    transitionTask() {}
+    async transitionTask(taskMetaData: TaskMetaData) {
+        const toTaskType = taskMetaData.toTaskType;
+        if (!toTaskType) throw new Error('Sys Error: No toTaskType present');
+        this.store.dispatch(new TransitionTask(taskMetaData));
+        await this.afs.updateTaskStatus(taskMetaData.taskId, toTaskType);
+    }
 }

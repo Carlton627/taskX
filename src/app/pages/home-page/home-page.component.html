@@ -25,11 +25,7 @@
                 </div>
             </div>
             <ng-container *ngFor="let todo of taskService.todoTasks$ | async">
-                <app-task-card
-                    [task]="todo"
-                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
-                    (transistionTaskMetaData)="transitionTask($event)"
-                ></app-task-card>
+                <app-task-card [task]="todo"></app-task-card>
             </ng-container>
         </div>
         <div class="in-progress column">
@@ -50,11 +46,7 @@
             <ng-container
                 *ngFor="let inProgress of taskService.inProgressTasks$ | async"
             >
-                <app-task-card
-                    [task]="inProgress"
-                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
-                    (transistionTaskMetaData)="transitionTask($event)"
-                ></app-task-card>
+                <app-task-card [task]="inProgress"></app-task-card>
             </ng-container>
         </div>
         <div class="completed column">
@@ -75,10 +67,7 @@
             <ng-container
                 *ngFor="let completed of taskService.completedTasks$ | async"
             >
-                <app-task-card
-                    [task]="completed"
-                    (deletedTaskMetaData)="deleteTaskFromTaskList($event)"
-                ></app-task-card>
+                <app-task-card [task]="completed"></app-task-card>
             </ng-container>
         </div>
     </div>
