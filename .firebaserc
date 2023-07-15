@@ -1,14 +1,17 @@
 {
+  "projects": {
+    "default": "fir-learn-b37a3"
+  },
   "targets": {
     "fir-learn-b37a3": {
       "hosting": {
         "taskX": [
           "taskx"
+        ],
+        "taskx": [
+          "taskX"
         ]
       }
     }
-  },
-  "projects": {
-    "default": "fir-learn-b37a3"
   }
 }
