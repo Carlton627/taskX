@@ -7,7 +7,7 @@ Proposed new features for taskX
 2. Syncing with Calendar
 3. How to schedule a new task in calendar based on free time blocks
 4. Creation of teams in TaskX - Paid feature
-5. Reminders and alert for high prio tasks, or tasks nearing deadlines
+5. Reminders and alert for high prio tasks, or tasks nearing deadlines - in progress
 6. Integration with other apps? Research on this
 7. Insights columns for productivity based on tasks completed
 8. Time tracking for tasks like JIRA

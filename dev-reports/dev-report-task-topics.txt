@@ -2,7 +2,7 @@
 #                      DEV REPORT 02-02-2023                         #
 ######################################################################
 
-Status: Completed with residual work left
+Status: Completed
 Component: Task Category Selector
 
     👉 This the main component which allows user to select, delete and create new categories.

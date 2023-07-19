@@ -1,0 +1,20 @@
+######################################################################
+#                      DEV REPORT 19-07-2023                         #
+######################################################################
+
+Status: In Progress / Research
+Component: TBD
+
+    👉 Data stream needs to be created for continuous tracking of notifications
+    👉 Notification Types:
+        🎯 Deadline nearing reminder
+        🎯 Task assigned by team lead
+        🎯 Task tracking not completed reminder
+
+Good to have, task detail page as part of this release
+
+Misc Work:
+    🎯 On refresh maintain current state of taskCategory and load tasks from there
+    🎯 Get version number from a config file for across the app
+
+Version. 1.8.0
