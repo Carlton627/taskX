@@ -34,12 +34,13 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLandingPage },
     },
-    {
-        path: 'teams',
-        component: TeamPageComponent,
-        canActivate: [AuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLandingPage },
-    },
+    // INFO: Commented to avoid teams feature
+    // {
+    //     path: 'teams',
+    //     component: TeamPageComponent,
+    //     canActivate: [AuthGuard],
+    //     data: { authGuardPipe: redirectUnauthorizedToLandingPage },
+    // },
 ];
 
 @NgModule({

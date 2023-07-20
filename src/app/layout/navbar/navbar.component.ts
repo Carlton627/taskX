@@ -26,7 +26,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     appOptionsMenu: NavMenuItem[] = [
         { name: 'Your Tasks', isActive: false, route: '/home' },
-        { name: 'Teams', isActive: false, route: '/teams' },
+        // INFO: Commented to avoid teams feature
+        // { name: 'Teams', isActive: false, route: '/teams' },
     ];
 
     user: User | undefined;

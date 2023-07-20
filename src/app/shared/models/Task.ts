@@ -10,7 +10,12 @@ export interface Task {
     startsOn?: string;
     deadline?: string;
     slug?: string;
+
+    // new props
     assignee?: string;
+    priority?: number;
+    attachments?: string[];
+    subTasks?: Task[];
 }
 
 export interface TaskMetaData {
